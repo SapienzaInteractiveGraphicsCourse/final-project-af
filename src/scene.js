@@ -16,7 +16,7 @@ var createScene = function () {
 
     var skybox = createSkyBox(scene);
 
-    BABYLON.SceneLoader.Append("./res/models/","man.obj", scene);
+    BABYLON.SceneLoader.Append("./res/models/player/","player.gltf", scene);
 
     // Our built-in 'ground' shape.
     //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 1, height: 1}, scene);
