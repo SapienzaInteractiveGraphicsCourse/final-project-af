@@ -27,7 +27,17 @@ var createScene = function () {
 
 
     // Our built-in 'ground' shape.
-    // var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 100, height: 100}, scene);
+    var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
+	groundMaterial.diffuseTexture = new BABYLON.Texture("res/textures/ground.jpg", scene);
+	groundMaterial.diffuseTexture.uScale = 6;
+	groundMaterial.diffuseTexture.vScale = 6;
+    ground.material = groundMaterial;
+
+
+
+
+
 
     var setSkyConfig = function (property, from, to) {
 		var keys = [
@@ -60,5 +70,10 @@ var createScene = function () {
 			default: break;
 		}
     });
+
+    //var ufo_position = new BABYLON.Vector3(-3.0, 20, 1.0);
+    //get_ufo(ufo_position, 2.0, scene);
+
+
     return scene;
 };
