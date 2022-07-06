@@ -3,12 +3,13 @@ var createScene = function () {
     var scene = new BABYLON.Scene(engine);
 
     // This creates and positions a free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+    //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
 
     // This targets the camera to scene origin
-    camera.setTarget(BABYLON.Vector3.Zero());
+    //camera.setTarget(BABYLON.Vector3.Zero());
 
     // This attaches the camera to the canvas
+    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0));
     camera.attachControl(canvas, true);
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
