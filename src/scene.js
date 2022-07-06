@@ -12,18 +12,14 @@ var createScene = function () {
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0));
     camera.attachControl(canvas, true);
 
-    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-    // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
+    // var box = new BABYLON.MeshBuilder.CreateBox("box",scene);
 
     var skybox = createSkyBox(scene);
 
-    BABYLON.SceneLoader.Append("","./res/models/man.obj", scene);
+    BABYLON.SceneLoader.Append("./res/models/","man.obj", scene);
 
     // Our built-in 'ground' shape.
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+    //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 1, height: 1}, scene);
 
     skybox.setSkyConfig("material.inclination", skybox.material.inclination, 0);
 
