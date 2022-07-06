@@ -8,8 +8,8 @@ function createSkyBox(scene) {
     var sunlight = new BABYLON.DirectionalLight("sunlight",new BABYLON.Vector3(0, -1, 0), scene);
     sunlight.parent = skybox;
 
-
-    skybox.setTime = function(time_to) {
+    // smoothly changes time to time_to
+    skybox.setTime = function(time_to,speed=1,cycle=false) {
         // change position of sun (visual)
         var time_from = skybox.material.inclination; 
                 
@@ -18,7 +18,7 @@ function createSkyBox(scene) {
 			{ frame: 100, value: time_to }
         ];
 
-        var animation = new BABYLON.Animation("animation","material.inclination", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var animation = new BABYLON.Animation("animation","material.inclination", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 		animation.setKeys(keys);
 
 
@@ -31,13 +31,14 @@ function createSkyBox(scene) {
 			{ frame: 100, value: rot_to }
         ];
 
-        var animation_rot = new BABYLON.Animation("animation_rot","rotation.x", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var animation_rot = new BABYLON.Animation("animation_rot","rotation.x", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 		animation_rot.setKeys(keys);
         scene.stopAnimation(skybox);
-		scene.beginDirectAnimation(skybox, [animation,animation_rot], 0, 100, false, 1);
+		scene.beginDirectAnimation(skybox, [animation,animation_rot], 0, 100, cycle, speed);
 
     }
 
+    // change any property with smooth interpolation
     skybox.setSkyConfig = function (property, from, to) {
 		var keys = [
             { frame: 0, value: from },
@@ -51,6 +52,32 @@ function createSkyBox(scene) {
 		scene.beginDirectAnimation(skybox, [animation], 0, 100, false, 1);
 	};
     
+
+    /* Enable/Disable daylight cycle */
+    skybox.cycling = false;
+    skybox.startCycling = function() {
+
+        if (this.cycling) {
+            console.log("already cycling");
+            return;
+        }
+        this.cycling = true;
+
+        // get current orientation
+        var time_to = skybox.material.inclination + 0.1;
+        this.setTime(time_to,1,true);
+
+
+    }
+    skybox.stopCycling = function() {
+        if (!this.cycling) {
+            console.log("already not cycling");
+            return;
+        }
+        this.cycling = false;
+        scene.stopAnimation(skybox);
+    }
+
     // add key listeners (temp)
     window.addEventListener("keydown", function (evt) {
         
@@ -59,8 +86,10 @@ function createSkyBox(scene) {
 			case 49: skybox.setTime(skybox.material.inclination+0.1); break; // 1
 			case 50: skybox.setTime(skybox.material.inclination-0.1); break; // 2
 
-			case 51: skybox.setSkyConfig("material.luminance", skybox.material.luminance, 0.1); break; // 3
-			case 52: skybox.setSkyConfig("material.luminance", skybox.material.luminance, 1.0); break; // 4
+			//case 51: skybox.setSkyConfig("material.luminance", skybox.material.luminance, 0.1); break; // 3
+            case 51: skybox.startCycling(); break; // 3
+			//case 52: skybox.setSkyConfig("material.luminance", skybox.material.luminance, 1.0); break; // 4
+            case 52: skybox.stopCycling(); break; // 4
 			default: break;
 		}
     });
