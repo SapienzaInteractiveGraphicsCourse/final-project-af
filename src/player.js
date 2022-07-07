@@ -1,34 +1,55 @@
 var player_path = "./res/models/player/";
-var player_prefix = "p"
-
-var animations;
 
 function createPlayer(scene) {
     var player = null;
-
-    animations = BABYLON.Animation.ParseFromFileAsync("resting",player_path+"resting.json");
-
     BABYLON.SceneLoader.Append("./res/models/player/","player.gltf", scene,function(scene) {
-        player =  scene.getMeshById("__root__") 
+        player =  scene.getMeshById("__root__");
+    
         // player and zombies have equal hierarchical trees and mesh names, 
         // they can only be distinguished by their unique id
         // this is why I rename all nodes and meshes with a prefix
-        rename_with_prefix(player,player_prefix);
+        rename_with_prefix(player,"p_");
 
         // place the model in the world
         // use "characterMedium" to orient the player in world frame
-        let base = scene.getMeshById(player_prefix+"characterMedium");
+        let base = scene.getMeshById("p_characterMedium");
         base.rotation.y = Math.PI;
 
-        // load necessary animations
+
+        loadAnimations(player);
     });
-    return player
+    return player;
+
 }
 
-/*
-        let left_shoulder = scene.getNodeById(player_prefix+"LeftShoulder");
-        let right_shoulder = scene.getNodeById(player_prefix+"RightShoulder");
-*/
+function loadAnimations(player) {
+    var frame_rate = 100;
+
+    // 1) Define an animation group
+    var p_rest_anim = new BABYLON.AnimationGroup("p_rest_anim"); 
+
+    // 2) Define an animation for each joint
+    var p_rest_left_arm = new BABYLON.Animation("p_rest_left_arm","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    //    And set the keys
+    p_rest_left_arm.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(-0.17,1.57,-1)},
+        { frame: 50, value: new BABYLON.Vector3(0.11,1.57,-1)},
+        { frame: 100, value: new BABYLON.Vector3(-0.17,1.57,-1)},
+
+    ]);
+    // 3) Link the animation to the joint
+    p_rest_anim.addTargetedAnimation(p_rest_left_arm,scene.getNodeById("p_LeftArm"));
+
+
+    p_rest_anim.speedRatio = 0.25;
+    p_rest_anim.play(true);
+
+
+    // return a dictionary with all the animation groups
+    return {"rest": p_rest_anim};
+}
 
 
 function rename_with_prefix(x,prefix) {
