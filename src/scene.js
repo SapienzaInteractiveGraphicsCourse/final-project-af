@@ -1,3 +1,5 @@
+var result = null;
+
 var createScene = function () {
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
@@ -16,7 +18,7 @@ var createScene = function () {
 
     var skybox = createSkyBox(scene);
 
-    BABYLON.SceneLoader.Append("./res/models/player/","player.gltf", scene);
+    createPlayer(scene);
 
     // Our built-in 'ground' shape.
     //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 1, height: 1}, scene);
