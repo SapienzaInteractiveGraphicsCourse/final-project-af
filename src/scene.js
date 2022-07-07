@@ -10,9 +10,35 @@ var createScene = function () {
     // This targets the camera to scene origin
     //camera.setTarget(BABYLON.Vector3.Zero());
 
-    // This attaches the camera to the canvas
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0));
-    camera.attachControl(canvas, true);
+   // FREE CAMERA
+   var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+   camera.setTarget(BABYLON.Vector3.Zero());
+
+   // ARCROTATE CAMERA
+   var camera2 = new BABYLON.ArcRotateCamera("camera2", -Math.PI / 4, 1.1, 20, BABYLON.Vector3.Zero());
+   camera2.target = BABYLON.Vector3.Zero();
+
+   camera.attachControl(canvas, true);
+
+   var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+   light.intensity = 0.7;
+
+   // SWITCHING ON DOUBLE CLICK
+   var switchCam = true;
+   scene.onPointerObservable.add((pointerInfo) => {
+       if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOUBLETAP) {
+           if (switchCam) {
+               camera2.detachControl(canvas);
+               scene.activeCamera = camera;
+               camera.attachControl(canvas, true);
+           } else {
+               camera.detachControl(canvas);
+               scene.activeCamera = camera2;
+               camera2.attachControl(canvas, true);
+           }
+           switchCam = !switchCam;
+       }
+   });
 
     // var box = new BABYLON.MeshBuilder.CreateBox("box",scene);
 
