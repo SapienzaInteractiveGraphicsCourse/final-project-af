@@ -5,8 +5,14 @@ function createSkyBox(scene) {
     var skybox = new BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     skybox.material = skyMaterial;
 
-    var sunlight = new BABYLON.DirectionalLight("sunlight",new BABYLON.Vector3(0, -1, 0), scene);
-    sunlight.parent = skybox;
+    var sunlight_direct = new BABYLON.DirectionalLight("sunlight_direct",new BABYLON.Vector3(0, -1, 0), scene);
+    sunlight_direct.parent = skybox;
+    sunlight_direct.intensity = 2.0;
+    
+    var sunlight = new BABYLON.HemisphericLight("sunlight",new BABYLON.Vector3(0, 1, 0), scene);
+    var max_intensity = 0.5;
+
+    sunlight.intensity = max_intensity;
 
     // smoothly changes time to time_to
     skybox.setTime = function(time_to,speed=1,cycle=false) {
@@ -18,9 +24,8 @@ function createSkyBox(scene) {
 			{ frame: 100, value: time_to }
         ];
 
-        var animation = new BABYLON.Animation("animation","material.inclination", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
-		animation.setKeys(keys);
-
+        var sky_animation = new BABYLON.Animation("sky_animation","material.inclination", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
+		sky_animation.setKeys(keys);
 
         // change light direction
         var rot_from = skybox.rotation.x;
@@ -33,9 +38,9 @@ function createSkyBox(scene) {
 
         var animation_rot = new BABYLON.Animation("animation_rot","rotation.x", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 		animation_rot.setKeys(keys);
-        scene.stopAnimation(skybox);
-		scene.beginDirectAnimation(skybox, [animation,animation_rot], 0, 100, cycle, speed);
 
+        scene.stopAnimation(skybox);
+		scene.beginDirectAnimation(skybox, [sky_animation,animation_rot], 0, 100, cycle, speed);
     }
 
     // change any property with smooth interpolation

@@ -20,9 +20,6 @@ var createScene = function () {
 
    camera.attachControl(canvas, true);
 
-   var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-   light.intensity = 0.7;
-
    // SWITCHING ON DOUBLE CLICK
    var switchCam = true;
    scene.onPointerObservable.add((pointerInfo) => {
@@ -40,14 +37,9 @@ var createScene = function () {
        }
    });
 
-    // var box = new BABYLON.MeshBuilder.CreateBox("box",scene);
-
     var skybox = createSkyBox(scene);
 
-    createPlayer(scene);
-
-    // Our built-in 'ground' shape.
-    //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 1, height: 1}, scene);
+    var player = createPlayer(scene);
 
     skybox.setSkyConfig("material.inclination", skybox.material.inclination, 0);
 
