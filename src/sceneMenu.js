@@ -1,32 +1,21 @@
 var createScene = function () {
-    // This creates a basic Babylon Scene object (non-mesh)
-    var scene = new BABYLON.Scene(engine);
+    
+    
+    ///////////// SCENE MENU ///////////////////////////////////////////////////////////////
+    var sceneMenu = new BABYLON.Scene(engine);
 
-    // This creates and positions a free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-
-    // This targets the camera to scene origin
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), sceneMenu);
     camera.setTarget(BABYLON.Vector3.Zero());
-
-    // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
 
-
-    var skybox = createSkyBox(scene);
+    var skybox = createSkyBox(sceneMenu);
     skybox.setSkyConfig("material.inclination", skybox.material.inclination, 0);
-
 
     var flag_buttons = 0;
 
-
-
-
-    // GUI
+    //------------------------Menu-----------------------------------------------
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-
-
-    //bigger rectangle
     var rect1 = new BABYLON.GUI.Rectangle();
     rect1.width = "700px";
     rect1.height = "500px";
@@ -36,25 +25,19 @@ var createScene = function () {
     rect1.background = "blue";
     advancedTexture.addControl(rect1);
 
-    //var image = new BABYLON.GUI.Image("but", "https://www.babylonjs-playground.com/textures/Logo.png");
-    //image.width = 0.4;
-    //image.height = 0.4;
-    //rect1.addControl(image);
-    var image_mirino = new BABYLON.GUI.Image("but", "res/textures/rock_wall.jpg");
-    image_mirino.width = 1;
-    image_mirino.height = 1;
-    rect1.addControl(image_mirino, 0, 1);
+    var image_rock = new BABYLON.GUI.Image("but", "res/textures/rock_wall.jpg");
+    image_rock.width = 1;
+    image_rock.height = 1;
+    rect1.addControl(image_rock, 0, 1);
     
     var grid = new BABYLON.GUI.Grid();   
     grid.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     grid.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER; 
-    rect1.addControl(grid); 
-    
     grid.width = 0.98;
     grid.height = 0.98;
-
     grid.addColumnDefinition(0.5);
     grid.addColumnDefinition(0.5);
+    rect1.addControl(grid);
     
     var panel = new BABYLON.GUI.StackPanel();    
     grid.addControl(panel, 0, 0);   
@@ -68,7 +51,7 @@ var createScene = function () {
     button1.children[0].fontSize = 24;
     button1.color = "#303233";
     button1.background = "#8c8f91";
-    panel.addControl(button1);  
+    //panel.addControl(button1);  
 
     var rectSpace1 = new BABYLON.GUI.Rectangle();
     rectSpace1.alpha = 0;
@@ -120,8 +103,6 @@ var createScene = function () {
     button4.color = "#303233";
     button4.background = "#8c8f91";
     panel.addControl(button4); 
-
-
     
     var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
     image_steampunk.width = 0.9;
@@ -139,7 +120,6 @@ var createScene = function () {
     wellcome_text.textVerticalAlignment = 0;
     grid.addControl(wellcome_text,0,1);
 
-    
 
     button1.onPointerClickObservable.add(function () {
         flag_buttons = 1;
@@ -225,11 +205,6 @@ var createScene = function () {
         grid.addControl(selectBox, 0, 1);  
     });
     
-
-    
-
-    
-
     var flag_music = 1;
     var flag_sound = 1;
     var flag_light = 0.0;
@@ -298,5 +273,111 @@ var createScene = function () {
     
 
 
-    return scene;
+
+
+    ///////////////// SCENE GAME ///////////////////////////////////////////////////////////////////////////////
+
+    var sceneGame = new BABYLON.Scene(engine);
+    
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), sceneGame);
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    
+    var camera2 = new BABYLON.ArcRotateCamera("camera2", -Math.PI / 4, 1.1, 20, BABYLON.Vector3.Zero());
+    camera2.target = BABYLON.Vector3.Zero();// arcrotate camera 
+
+    camera.attachControl(canvas, true);
+
+    var switchCam = true;    // switching on double click
+    sceneGame.onPointerObservable.add((pointerInfo) => {
+        if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOUBLETAP) {
+            if (switchCam) {
+                camera2.detachControl(canvas);
+                sceneGame.activeCamera = camera;
+                camera.attachControl(canvas, true);
+            } else {
+                camera.detachControl(canvas);
+                sceneGame.activeCamera = camera2;
+                camera2.attachControl(canvas, true);
+            }
+            switchCam = !switchCam;
+        }
+    });
+
+    var skybox = createSkyBox(sceneGame);
+
+    var player = createPlayer(sceneGame);
+
+    skybox.setSkyConfig("material.inclination", skybox.material.inclination, 0);
+
+
+
+
+
+
+    //////////////////GUI BOTH SCENES///////////////////////////////////////////////////////////////////////////////
+    var clicks = 0;
+    var showScene = 0;
+    var advancedTextureTot;
+   
+    var createGUI = function(sceneMenu, showScene) {             
+        switch (showScene) {
+            case 0:            
+                advancedTextureTot = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true, sceneMenu);
+                var button = BABYLON.GUI.Button.CreateSimpleButton("but", "Game ");
+                
+            break
+            case 1:            
+                advancedTextureTot = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true, sceneGame);
+                var button = BABYLON.GUI.Button.CreateSimpleButton("but", "Menu ");
+            break
+        }
+        
+        button.thickness = 3;
+        button.width = "100px";
+        button.height = "100px";
+        button.cornerRadius = 40;
+        button.children[0].color = "black";
+        button.children[0].fontSize = 24;
+        button.color = "#303233";
+        button.background = "#8c8f91";
+        button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
+
+
+        advancedTextureTot.addControl(button);
+
+    
+        button.onPointerUpObservable.add(function () {       
+            clicks++;                   
+        });
+    }
+
+
+    createGUI(sceneMenu, showScene);
+        
+        setTimeout(function() {
+            engine.stopRenderLoop();
+    
+            engine.runRenderLoop(function () {
+                if(showScene != (clicks % 2)){
+                    showScene = clicks % 2;          
+                    switch (showScene) {
+                        case 0:                    
+                            advancedTextureTot.dispose();
+                            createGUI(sceneMenu, showScene);
+                            scene.render();
+                        break
+                        case 1:
+                            advancedTextureTot.dispose();
+                            createGUI(sceneGame, showScene);
+                            sceneGame.render();
+                        break
+                    }
+                }
+            });
+        }, 500);
+
+
+    return sceneMenu;
 };
