@@ -27,9 +27,33 @@ function Game() {
         //this.player.camera.attachControl(this.canvas, true);
     }
 
+    this.setUpMenu = async function() {
+        this.scene = new BABYLON.Scene(this.engine);
+        // put here the main menu
+        // remember that the scene is "this.scene" not "scene"
+
+        // add a callback to the start button that calls this.goToGame
+
+        // if you want to test go to main.js and call game.goToMainMenu()
+        // instead of game.goToGame();
+        
+    }
+
     this.loadCharacterAssets = async function(scene) {
             return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/player/", "player.gltf", scene).then(
                 (result) =>{;this.playerAsset = result.meshes[0];});
+    }
+
+    this.goToMainMenu = async function() {
+        this.engine.displayLoadingUI(); // display loading
+        if (this.scene != null) {this.scene.detachControl(); // inhibit any input
+                                 this.scene.dispose();}     // delete old scene
+
+        await this.setUpMenu();
+
+        this.engine.hideLoadingUI();
+        this.state = GAME_STATES.MAIN_MENU;
+        this.goToGame();
     }
 
     // this gets called when you transition into the actual game
@@ -41,9 +65,6 @@ function Game() {
         await this.setUpGame();
 
         this.engine.hideLoadingUI();
-
-
-
         this.state = GAME_STATES.PLAYING;
     }
     
