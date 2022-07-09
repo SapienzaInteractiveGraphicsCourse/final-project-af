@@ -63,11 +63,15 @@ var createScene = function () {
 
     var house = createHouse(scene);
     
-    var tree = createTree(scene,[-10,-4,20],[2*Math.PI/5,Math.PI/5,0]);
+    //var tree = createTree(scene,[-10,-4,20],[2*Math.PI/5,Math.PI/5,0]);
     //var tree2 = createTree(scene,[10,0,0],[0,Math.PI/3,0]);
     //var tree3 = createTree(scene,[0,10,0],[0,Math.PI/3,0]);
     var tractor = createTractor(scene,[6,-0.85,7],[-Math.PI/25,0,-Math.PI/20]);
     var stone = createStone(scene,[-10,-3.6,0],[-Math.PI/10,Math.PI/20,0]);
+
+    var position_random = getRandomLoc([0.0, -R, 10.0],R);
+    var rotation_random = getRotation(position_random,world_position);
+    var tree = createRandomTrees(scene,position_random,rotation_random);
 
     //var apollo = createApollo(scene,[0,-R,10.25 - R],[-Math.PI/2,0,0]);
     return scene;

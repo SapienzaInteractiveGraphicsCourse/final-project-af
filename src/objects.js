@@ -21,9 +21,7 @@ function createHouse(scene) {
 
 function createTree(scene,position,rotation) {
     var object = null;
-
-    //BABYLON.SceneLoader.Append("./res/models/tree-05-babylon/","tree-05.babylon", scene,function(scene) {
-        BABYLON.SceneLoader.Append("./res/models/","looe.babylon", scene,function(scene) {
+    BABYLON.SceneLoader.Append("./res/models/","looe.babylon", scene,function(scene) {
         object =  scene.getMeshById("Circle_Circle");
         object.position.x = position[0];
         object.position.y = position[1];
@@ -35,7 +33,6 @@ function createTree(scene,position,rotation) {
         object.rotation.y = rotation[1];
         object.rotation.z = rotation[2];
         object.rotationQuaternion = BABYLON.Quaternion.FromEulerVector(object.rotation);
-        console.log(object);
     });
 
     //object =  scene.getMeshById("dead_tree");
@@ -47,15 +44,19 @@ function createTree(scene,position,rotation) {
 function getRandomLoc(worldC,R){
     var x = (Math.cos(Math.random()*Math.PI))* R + worldC[0] ;
     var z = (Math.cos(Math.random()*Math.PI)) * R + worldC[2] ;
-    var y = Math.sqrt(worldC[1] + R*R - Math.pow((x - worldC[0]),2) - Math.pow((z - worldC[2]),2));
-    return [x,y,z];
+    var y = worldC[1] + Math.sqrt( R*R - Math.pow((x - worldC[0]),2) - Math.pow((z - worldC[2]),2));
+    return BABYLON.Vector3(x,y,z);
 }
 
-function getRotation(position,R){
-    var x_r = Math.atan2(R/position[2],R/position[1]);
-    var y_r = Math.atan2(R/position[0],R/position[2]);
-    var z_r = Math.atan2(R/position[1],R/position[0]);
-    return [x_r,y_r,z_r];
+function getRotation(position,worldC){
+    //var z_axis = normalize(position.subtract(worldC));
+    var random_vector =  BABYLON.Vector3(Math.random(),Math.random(),Math.random());
+    //var x_axis = z_axis.cross(r);
+    //var y_axis = x_axis.cross(z_axis);
+    console.log(random_vector);
+    var m = BABYLON.Matrix.LookAtRH(worldC, position, random_vector);
+
+    return m;
 }
 
 
@@ -158,4 +159,19 @@ function createApollo(scene,position,rotation) {
     return object;
 }
 
+function createRandomTrees(scene,position,rotation){
+    var object = null;
+     
+    BABYLON.SceneLoader.Append("./res/models/","looe.babylon", scene,function(scene) {
+        object =  scene.getMeshById("Circle_Circle");
+        
+        m.decompose(null,object.rotationQuaternion,null,null);
 
+        object.position.x = position[0];
+        object.position.y = position[1];
+        object.position.z = position[2];
+        object.scaling.x = 0.7;
+        object.scaling.y = 0.7;
+        object.scaling.z = 0.7;
+    });
+}
