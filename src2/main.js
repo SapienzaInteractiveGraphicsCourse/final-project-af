@@ -7,11 +7,3 @@ window.onload = function() {
     // Resize
     window.addEventListener("resize", ()=>(g.engine.resize()));
 };
-
-
-
-
-
-
-
-

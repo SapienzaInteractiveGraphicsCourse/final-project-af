@@ -27,22 +27,16 @@ function Game() {
         this.player.camera.attachControl(this.canvas, true);
     }
 
-    // this gets called when you transition into the actual game
-    this.goToGame = async function() {
-        this.engine.displayLoadingUI(); // display loading
-        if (this.scene != null) {this.scene.detachControl(); // inhibit any input
-                                    this.scene.dispose();}     // delete old scene
-
-        await this.setUpGame();
-
-        this.engine.hideLoadingUI();
-        this.state = GAME_STATES.PLAYING;
-    }
-
     this.setUpMenu = async function() {
         this.scene = new BABYLON.Scene(this.engine);
+        // put here the main menu
+        // remember that the scene is "this.scene" not "scene"
 
-        var menu = new Menu(this);        
+        // add a callback to the start button that calls this.goToGame
+
+        // if you want to test go to main.js and call game.goToMainMenu()
+        // instead of game.goToGame();
+        
     }
 
     this.loadCharacterAssets = async function(scene) {
@@ -59,9 +53,28 @@ function Game() {
 
         this.engine.hideLoadingUI();
         this.state = GAME_STATES.MAIN_MENU;
+        this.goToGame();
     }
-        
-    this.engine.runRenderLoop(() => {this.scene.render()});
+
+    // this gets called when you transition into the actual game
+    this.goToGame = async function() {
+        this.engine.displayLoadingUI(); // display loading
+        if (this.scene != null) {this.scene.detachControl(); // inhibit any input
+                                 this.scene.dispose();}     // delete old scene
+
+        await this.setUpGame();
+
+        this.engine.hideLoadingUI();
+        this.state = GAME_STATES.PLAYING;
+    }
+    
+    
+    this.engine.runRenderLoop(() => {
+        switch (this.state) {
+            case GAME_STATES.PLAYING:
+                this.scene.render();
+            default: break;}
+    });
 
     // Shift+Ctrl+Alt+I to open the inspector
     window.addEventListener("keydown", (ev) => {
