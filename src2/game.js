@@ -22,9 +22,9 @@ function Game() {
         await this.environment.load();
         await this.loadCharacterAssets();
         this.input = new PlayerInput(this.scene);
-        this.player = new Player(this.playerAsset.id, this.scene, this.input);
+        this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet);
         this.scene.activeCamera = this.player.camera;
-        //this.player.camera.attachControl(this.canvas, true);
+        this.player.camera.attachControl(this.canvas, true);
     }
 
     this.setUpMenu = async function() {
