@@ -47,13 +47,20 @@ function Game() {
     }
 
     this.loadCharacterAssets = async function(scene) {
-            return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/player/", "player.gltf", scene).then(
-                (result) =>{
-                    this.playerAsset = result.meshes[0];
-                    this.playerAsset.rotationQuaternion = null;
-                    rename_with_prefix(this.playerAsset,"p_");
-                    
-                });
+        await BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/player/", "player.gltf", scene).then(
+            result =>{this.playerAsset = result.meshes[0];})  
+        this.playerAsset.rotationQuaternion = null;
+        rename_with_prefix(this.playerAsset,"p_");
+        await BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/m1911-handgun-babylon/", "m1911-handgun.babylon", scene).then(
+            result =>{
+                var gun = new BABYLON.TransformNode("gun",scene);
+                result.meshes.forEach(mesh => mesh.parent=gun);
+                gun.scaling = new BABYLON.Vector3(0.01,0.01,0.01);
+                gun.rotationQuaternion = null;
+                gun.rotation = new BABYLON.Vector3(1.56,-3.13,-1.59);
+                gun.position = new BABYLON.Vector3(-0.06,0.29,0);
+                gun.parent = this.scene.getNodeById("p_RightHand");
+            })
     }
 
     this.goToMainMenu = async function() {
@@ -79,7 +86,8 @@ function rename_with_prefix(x,prefix) {
     let children = x.getChildren()
     if (children == []) {return;} // no children left here
     // else
-    children.forEach(child => rename_with_prefix(child,prefix));
+    
+    children.forEach(child => {child.rotationQuaternion = null; rename_with_prefix(child,prefix)});
 
     return;
 }
