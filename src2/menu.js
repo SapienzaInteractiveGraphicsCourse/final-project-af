@@ -107,16 +107,16 @@ function Menu(game) {
     image_steampunk.height = 0.95;
     grid.addControl(image_steampunk,0,1);
 
-    var wellcome_text = new BABYLON.GUI.TextBlock();
-    wellcome_text.width = 0.7;
-    wellcome_text.height = 0.7;
-    wellcome_text.text = "Wellcome Gay!";
-    wellcome_text.color = "white";
-    wellcome_text.fontSize = 18;
-    wellcome_text.textWrapping = 1;
-    wellcome_text.textHorizontalAlignment = 0;
-    wellcome_text.textVerticalAlignment = 0;
-    grid.addControl(wellcome_text,0,1);
+    var welcome_text = new BABYLON.GUI.TextBlock();
+    welcome_text.width = 0.7;
+    welcome_text.height = 0.7;
+    welcome_text.text = "Welcome!";
+    welcome_text.color = "white";
+    welcome_text.fontSize = 18;
+    welcome_text.textWrapping = 1;
+    welcome_text.textHorizontalAlignment = 0;
+    welcome_text.textVerticalAlignment = 0;
+    grid.addControl(welcome_text,0,1);
 
 
 

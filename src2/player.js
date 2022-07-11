@@ -1,17 +1,16 @@
-function vec3to4(vec3,fourth=0) {return new BABYLON.Vector4(vec3._x,vec3._y,vec3._z,fourth);}
 function vec4to3(vec4) {return new BABYLON.Vector3(vec4.x,vec4.y,vec4.z);}
-
 function getAxes(m) { // returns the columns of the rotation matrix m
     var x = vec4to3(m.getRow(0));
     var y = vec4to3(m.getRow(1));
     var z = vec4to3(m.getRow(2));
     return [x,y,z];
 }
-
-function closestOrthogonal(still,moving) {return still.cross(moving).cross(still);}
-
-
 function Player(assets,scene,input,planet) {
+
+    const PLAYER_STATES = {
+        STILL: 0,
+        
+    }
 
     const FWD_SPEED = 0.2;
     const STRAFE_SPEED = 0.1;
@@ -27,6 +26,8 @@ function Player(assets,scene,input,planet) {
     this.camera.alpha = 0;
     this.input = input;
 
+    this.anims = loadPlayerAnimations(this);
+    this.anims["rest"].play(true);
 
     // control keypresses everytime you render the frame
     // maybe add the callback directly in the player update function
@@ -52,11 +53,8 @@ function Player(assets,scene,input,planet) {
 
         }
 
-
-        
-
-
         // update animations
+
         // handle collisions
     }); 
     

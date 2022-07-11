@@ -21,6 +21,7 @@ function Game() {
 
         await this.environment.load();
         await this.loadCharacterAssets();
+        
         this.input = new PlayerInput(this.scene);
         this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet.id);
         this.scene.activeCamera = this.player.camera;
@@ -47,7 +48,12 @@ function Game() {
 
     this.loadCharacterAssets = async function(scene) {
             return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/player/", "player.gltf", scene).then(
-                (result) =>{;this.playerAsset = result.meshes[0];});
+                (result) =>{
+                    this.playerAsset = result.meshes[0];
+                    this.playerAsset.rotationQuaternion = null;
+                    rename_with_prefix(this.playerAsset,"p_");
+                    
+                });
     }
 
     this.goToMainMenu = async function() {
@@ -67,4 +73,13 @@ function Game() {
     window.addEventListener("keydown", (ev) => {
     if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) 
     if (this.scene.debugLayer.isVisible()) this.scene.debugLayer.hide(); else this.scene.debugLayer.show();});
+}
+function rename_with_prefix(x,prefix) {
+    x.id = prefix + x.id; // add a prefix
+    let children = x.getChildren()
+    if (children == []) {return;} // no children left here
+    // else
+    children.forEach(child => rename_with_prefix(child,prefix));
+
+    return;
 }
