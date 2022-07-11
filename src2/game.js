@@ -26,6 +26,9 @@ function Game() {
         this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet.id);
         this.scene.activeCamera = this.player.camera;
         this.player.camera.attachControl(this.canvas, true);
+
+        this.enemy = new Enemy(this.scene,this.environment,this.player);
+        await this.enemy.loadEnemy();
     }
 
     // this gets called when you transition into the actual game
