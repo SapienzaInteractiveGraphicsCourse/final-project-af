@@ -21,14 +21,14 @@ function createHouse(scene) {
 
 function createTree(scene,position,rotation) {
     var object = null;
-    BABYLON.SceneLoader.Append("./res/models/","looe.babylon", scene,function(scene) {
-        object =  scene.getMeshById("Circle_Circle");
+    BABYLON.SceneLoader.Append("./res/models/tree-babylon/","tree.babylon", scene,function(scene) {
+        object =  scene.getMeshById("Prunus_americana_01");
         object.position.x = position[0];
         object.position.y = position[1];
         object.position.z = position[2];
-        object.scaling.x = 0.7;
-        object.scaling.y = 0.7;
-        object.scaling.z = 0.7;
+        object.scaling.x = 1;
+        object.scaling.y = 1;
+        object.scaling.z = 1;
         object.rotation.x = rotation[0];
         object.rotation.y = rotation[1];
         object.rotation.z = rotation[2];
@@ -188,7 +188,6 @@ function createRandomTrees(scene,position,rotation){
      
     BABYLON.SceneLoader.Append("./res/models/","looe.babylon", scene,function(scene) {
         object =  scene.getMeshById("Circle_Circle");
-
         object.position = position;
         object.scaling.x = 0.7;
         object.scaling.y = 0.7;
@@ -196,6 +195,8 @@ function createRandomTrees(scene,position,rotation){
         rotation.decompose(null,object.rotationQuaternion,null,null);
     });
 }
+
+
 
 
 

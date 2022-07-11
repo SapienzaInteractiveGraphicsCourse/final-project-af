@@ -1,3 +1,7 @@
+
+
+
+
 var createScene = function () {
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
@@ -59,7 +63,7 @@ var createScene = function () {
     
     const R = 30.0;
     const world_position = new BABYLON.Vector3(0.0, -R, 10.0);
-    const world_rotation =  new BABYLON.Vector3(Math.PI/2,Math.PI, Math.PI/2);
+    const world_rotation =  new BABYLON.Vector3(Math.PI, Math.PI, Math.PI/2);
     const world = BABYLON.MeshBuilder.CreateSphere("world", {diameter:R*2}, scene);
     world.position = world_position;
     world.rotation = world_rotation;
@@ -89,8 +93,9 @@ var createScene = function () {
     
     var position_random_tree = getRandomLoc([0.0, -R, 10.0],R);
     var rotation_random_tree = getRotation(position_random_tree,world_position);
-    var tree = createRandomTrees(scene,position_random_tree,rotation_random_tree);
-
+    var treeBurned = createRandomTrees(scene,position_random_tree,rotation_random_tree);
+    var treeGreen = createTree(scene,[-7,-0.5,12],[0,0,-Math.PI/23] );
+    
     var position_random_stone = getRandomLoc([0.0, -R, 10.0],R);
     var rotation_random_stone = getRotation(position_random_stone,world_position);
 
@@ -101,10 +106,6 @@ var createScene = function () {
     if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) 
     if (this.scene.debugLayer.isVisible()) this.scene.debugLayer.hide(); else this.scene.debugLayer.show();});
     // Shift+Ctrl+Alt+I to open the inspector
-
-    
-
-    
 
     return scene;
 };
