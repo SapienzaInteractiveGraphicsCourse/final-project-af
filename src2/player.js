@@ -16,12 +16,12 @@ function Player(assets,scene,input,planet) {
     this.mesh.rotationQuaternion = null;
     this.planet = scene.getMeshById(planet);
     this.heading = 0;
-    this.mesh.parent = this.planet
+    //this.mesh.parent = this.planet
     this.mesh.position.y = this.planet.radius;
 
     this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0.8, 10, this.mesh.position);
     //this.camera.parent = this.mesh;
-    this.camera.parent = this.planet;   
+
 
     this.input = input;
 
@@ -57,7 +57,7 @@ function Player(assets,scene,input,planet) {
             // compute the rotation angle
             var rotAngle = (new BABYLON.Vector2(straight,strafe)).length() * this.deltaTime;
             
-            this.mesh.rotateAround(BABYLON.Vector3.Zero(), this.mesh.right,-rotAngle);
+            this.planet.rotateAround(BABYLON.Vector3.Zero(), this.mesh.right,rotAngle);
 
 
             this.isMoving = true;

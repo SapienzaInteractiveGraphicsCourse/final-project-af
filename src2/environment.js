@@ -157,6 +157,7 @@ function Environment(scene) {
 
         this.smoke = new BABYLON.ParticleSystem("particles", 2500 , this.scene);
         this.smoke.manualEmitCount = this.smoke.getCapacity();
+        this.smoke.isLocal = true;
         this.smoke.minEmitBox = new BABYLON.Vector3(-5, 1, -5); // Starting all from
         this.smoke.maxEmitBox = new BABYLON.Vector3(5, 1, 5); // To...
         this.smoke.particleTexture = fogTexture.clone();
@@ -177,7 +178,7 @@ function Environment(scene) {
         this.smoke.minEmitPower = .5;
         this.smoke.maxEmitPower = 1;
         this.smoke.updateSpeed = 0.005;
-        this.smoke.parent = this.underworld;
+        this.smoke.parent = this.smokeFountain;
         this.smoke.start();
 
 

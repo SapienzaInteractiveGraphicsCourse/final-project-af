@@ -2,7 +2,7 @@ function Enemy(scene,environment,player) {
 
     this.scene = scene;
     this.player = player.mesh
-
+    this.player_position = this.player.position.clone(); 
 
     this.environment = environment;
 
@@ -63,18 +63,18 @@ function Enemy(scene,environment,player) {
         
 
     this.scene.onBeforeRenderObservable.add(() => {
-        // here add enemy behavior
-        var player_position = this.player.position;
+        var m = this.environment.planet.computeWorldMatrix(true)
+        var player_position_planet = BABYLON.Vector3.TransformCoordinates(this.player_position,BABYLON.Matrix.Invert(m));
         this.enemies.forEach(enemy => {
             // face the player
-            var m = OrientEnemy(enemy.position,player_position);
+            var m = OrientEnemy(enemy.position,player_position_planet);
     
             const rotation = new BABYLON.Quaternion();
             m.decompose(null,enemy.rotationQuaternion,null,null);
             //enemy.rotation = rotation.toEulerAngles();
 
             // and take a step
-            if (enemy.position.subtract(player_position).length() > 0.5)
+            if (enemy.position.subtract(player_position_planet).length() > 0.5)
                 enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH);
 
         });
