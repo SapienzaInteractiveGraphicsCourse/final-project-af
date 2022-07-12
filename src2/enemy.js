@@ -1,8 +1,12 @@
 function Enemy(scene,environment,player) {
 
     this.scene = scene;
-    this.player = player;
+    this.player = player.mesh
+
+
     this.environment = environment;
+
+    const STEP_LENGTH = 0.001;
 
     this.enemies = [];
 
@@ -38,36 +42,61 @@ function Enemy(scene,environment,player) {
 
         // "where" has to be on the sphere
         var R = this.environment.planet.radius;
-        console.log(R);
-        console.log(where.length())
         if (Math.abs(where.length()-R) > 0.01) {
             
             where = where.normalize().scale(R);
         }
 
-        base.position = where;
+        //base.position = where;
         base.parent = this.environment.planet;
 
         newInstance.position._y += 1.0;
         newInstance.rotation._y += Math.PI;
         newInstance.parent = base;
 
-        base.rotation = new BABYLON.Vector3(0,Math.PI/2,-Math.PI/2);
+        base.position = where;
+        base.rotationQuaternion = new BABYLON.Quaternion();
 
-        this.enemies.push(newInstance);
+        
+        
+
+        this.enemies.push(base);
     }
 
         
 
     this.scene.onBeforeRenderObservable.add(() => {
         // here add enemy behavior
-
-        var player_position = this.player.position ; 
-
+        var player_position = this.player.position;
         this.enemies.forEach(enemy => {
-            var position = this.position;
-            var movDir = player_position.sub(position); movDir.normalize();
-            
+            // face the player
+            var m = OrientEnemy(enemy.position,player_position);
+    
+            const rotation = new BABYLON.Quaternion();
+            m.decompose(null,enemy.rotationQuaternion,null,null);
+            //enemy.rotation = rotation.toEulerAngles();
+
+            // and take a step
+            if (enemy.position.subtract(player_position).length() > 0.5)
+                enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH);
+
         });
     });
 }
+
+
+function OrientEnemy(position, player_position) {
+
+    var y = BABYLON.Vector3.Normalize(position);
+    var z_pointing = player_position.subtract(position); z_pointing.normalize();
+    var x = (z_pointing.cross(y)).normalize();
+    var z = y.cross(x).normalize(); 
+
+    var m = new BABYLON.Matrix();
+        m.setRow(0,new BABYLON.Vector4(-x._x,-x._y,-x._z,0))
+        m.setRow(1,new BABYLON.Vector4(-y._x,-y._y,-y._z,0))
+        m.setRow(2,new BABYLON.Vector4(z._x,z._y,z._z,0))
+
+    return m;
+}
+
