@@ -1,4 +1,4 @@
-function createSkyBox(scene) {
+function createSkyBox(scene,game) {
     var skyMaterial = new BABYLON.SkyMaterial("skyMaterial", scene);
     skyMaterial.backFaceCulling = false;
 
@@ -10,7 +10,7 @@ function createSkyBox(scene) {
     sunlight_direct.intensity = 2.0;
     
     var sunlight = new BABYLON.HemisphericLight("sunlight",new BABYLON.Vector3(0, 1, 0), scene);
-    var max_intensity = 1;
+    var max_intensity = 1;//this.intensity;
 
     sunlight.intensity = max_intensity;
 

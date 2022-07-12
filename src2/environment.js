@@ -6,6 +6,7 @@ function Environment(scene) {
 
     this.treeAssets = null;
     this.houseAssets = null;
+    this.intensity = 1;
 
 
     this.load = async function(game) { // Here you load the world assets
@@ -64,8 +65,8 @@ function Environment(scene) {
         //this.instanceDeadTrees(10);
         
         await this.loadHouseAssets(this.scene);
-        this.houseAssets.position = new BABYLON.Vector3( R-1.2, 0, 5.5);
-        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2);
+        this.houseAssets.position = new BABYLON.Vector3( R-1.3, 0, 5.5);
+        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/15, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
         this.houseAssets.parent = this.upperworld;
 
@@ -339,6 +340,7 @@ function Environment(scene) {
         var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
 
         var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
+        buttonQuit.alpha = 0.7;
         buttonQuit.thickness = 4;
         buttonQuit.width = 0.1;
         buttonQuit.height = 0.1;

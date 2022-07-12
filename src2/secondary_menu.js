@@ -98,12 +98,12 @@ function SecondaryMenu(advancedTexture2,game) {
     var welcome_text = new BABYLON.GUI.TextBlock();
     welcome_text.width = 0.7;
     welcome_text.height = 0.7;
-    welcome_text.text = "Welcome!";
-    welcome_text.color = "white";
-    welcome_text.fontSize = 18;
+    welcome_text.text = "What's wrong soldier?!";
+    welcome_text.color = "gold";
+    welcome_text.fontSize = 30;
     welcome_text.textWrapping = 1;
-    welcome_text.textHorizontalAlignment = 0;
-    welcome_text.textVerticalAlignment = 0;
+    welcome_text.textHorizontalAlignment = 2;
+    welcome_text.textVerticalAlignment = 2;
     grid.addControl(welcome_text,0,1);
 
 
@@ -231,7 +231,7 @@ function SecondaryMenu(advancedTexture2,game) {
 
 
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
-	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 1)
 }
 
 
