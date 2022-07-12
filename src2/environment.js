@@ -1,15 +1,74 @@
 // this class is used to define the game scene except player and zombies
 
 function Environment(scene) {
+    //this.game = game;
     this.scene = scene;
 
     this.treeAssets = null;
     this.houseAssets = null;
 
 
-    this.load = async function() { // Here you load the world assets
+    this.load = async function(game) { // Here you load the world assets
         var skybox = createSkyBox(scene);
         skybox.setTime(0);
+
+        var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
+
+        var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
+        buttonQuit.thickness = 4;
+        buttonQuit.width = 0.1;
+        buttonQuit.height = 0.1;
+        buttonQuit.cornerRadius = 540;
+        buttonQuit.children[0].color = "white";
+        buttonQuit.children[0].fontSize = 30;
+        buttonQuit.color = "#303233";
+        buttonQuit.background = "red";
+        buttonQuit.horizontalAlignment = 1;
+        buttonQuit.verticalAlignment = 0;
+        advancedTexture2.addControl(buttonQuit); 
+        console.log(game);
+        buttonQuit.onPointerClickObservable.add(function () {
+
+        SecondaryMenu(advancedTexture2,game);
+        });
+
+        
+
+        var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", this.scene, null, {
+            loop: true,
+            autoplay: true
+          });
+
+        var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", this.scene);
+        var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", this.scene);
+        var walking_sound = new BABYLON.Sound("gunshot", "./res/sounds/walking.wav", this.scene);
+
+
+        window.addEventListener("mousedown", function(evt) {
+            if (evt.button === 0) {
+                hammer_sound.play();
+            }
+        });
+
+        window.addEventListener("keydown", function (evt) {
+            // Press space key to fire
+            if (evt.keyCode === 32) {
+                gunshot_sound.play();
+            }
+        });
+
+        window.addEventListener("keydown", function (evt) {
+            // Press space key to fire
+            if (evt.keyCode === 87 || evt.keyCode === 83 || evt.keyCode === 65|| evt.keyCode === 68 ) {
+                if(!walking_sound.isPlaying){
+                    walking_sound.play(); 
+                }
+ 
+            }
+        });
+
+
+
 
         var planetMat = new BABYLON.StandardMaterial("mat1", scene);
         planetMat.ambientTexture = new BABYLON.Texture("./res/textures/mars.jpg",scene);
