@@ -182,7 +182,7 @@ function loadPlayerAnimations(player) {
                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_right_arm = new BABYLON.Animation("p_walk_right_arm","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     var p_walk_right_forearm = new BABYLON.Animation("p_walk_right_forearm","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);                                               
@@ -198,122 +198,177 @@ function loadPlayerAnimations(player) {
                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     var p_walk_up_left_leg =    new BABYLON.Animation("p_walk_up_left_leg","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_left_leg =       new BABYLON.Animation("p_walk_left_leg","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_up_right_leg =    new BABYLON.Animation("p_walk_up_right_leg","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_right_leg =       new BABYLON.Animation("p_walk_right_leg","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_right_foot =      new BABYLON.Animation("p_walk_right_foot","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-    var p_walk_left_foot =      new BABYLON.Animation("p_walk_right_foot","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_walk_left_foot =      new BABYLON.Animation("p_walk_left_foot","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_toes =      new BABYLON.Animation("p_walk_toes","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
     var p_walk_spine =      new BABYLON.Animation("p_walk_spine","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     var p_walk_neck =      new BABYLON.Animation("p_walk_neck","rotation",frame_rate,
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
                                                 
     //    And set the keys with the help of inspector (Shift+Ctrl+Alt+I)
-    p_walk_spine.setKeys([
-        { frame: 0, value: DegToRad(22,0,0)},
-        { frame: 50, value:  DegToRad(11,0,0)},
-        { frame: 100, value: DegToRad(22,0,0)},
-    ]);
-
-    p_walk_neck.setKeys([
-        { frame: 0, value: DegToRad(0,-31.4,11)},
-        { frame: 50, value: DegToRad(-15,-34,11.4)},
-        { frame: 100, value: DegToRad(0,-31.4,11)}
-    ]);
     p_walk_left_shoulder.setKeys([
-        { frame: 0, value: DegToRad(-70,123.87,175)},
-        { frame: 50, value: DegToRad(-70,123.87,175)},
-        { frame: 100, value: DegToRad(-70,123.87,175)},
+        { frame: 0, value: new BABYLON.Vector3(-1.222,2.162,3.054),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-1.222,2.162,3.054),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-1.222,2.162,3.054),
+    },
     ]);
     p_walk_left_arm.setKeys([
-        { frame: 0, value: DegToRad(42.3,131.4,-24)},
-        { frame: 50, value:DegToRad(16.1,142.8,-18.8)},
-        { frame: 100, value:  DegToRad(42.3,131.4,-24)},
+        { frame: 0, value: new BABYLON.Vector3(0.738,2.293,-0.419),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.281,2.492,-0.328),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.738,2.293,-0.419),
+    },
     ]);
     p_walk_left_forearm.setKeys([
-        { frame: 0, value: DegToRad(44.14,7.7,16.5)},
-        { frame: 50, value:  DegToRad(38.6,5.1,14.4)},
-        { frame: 100, value:  DegToRad(44.14,7.7,16.5)},
+        { frame: 0, value: new BABYLON.Vector3(0.77,0.134,0.288),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.674,0.089,0.251),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.77,0.134,0.288),
+    },
     ]);
     p_walk_left_hand.setKeys([
-        { frame: 0, value: DegToRad(11, 82.5,11.4)},
-        { frame: 50, value:  DegToRad(11, 82.5,11.4)},
-        { frame: 100, value:  DegToRad(11, 82.5,11.4)},
+        { frame: 0, value: new BABYLON.Vector3(0.192,1.44,0.199),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.192,1.44,0.199),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.192,1.44,0.199),
+    },
     ]);
-
-
     p_walk_right_shoulder.setKeys([
-        { frame: 0, value:   DegToRad(52.0, 128, -148.7)},
-        { frame: 50, value:   DegToRad(52.0, 128, -148.7)},
-        { frame: 100, value:  DegToRad(52.0, 128, -148.7)},
+        { frame: 0, value: new BABYLON.Vector3(0.908,2.234,-2.595),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.908,2.234,-2.595),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.908,2.234,-2.595),
+    },
     ]);
-
-    p_walk_right_arm.setKeys([{ frame: 0, value:   DegToRad(6, -148, 2)}]);
-
+    p_walk_right_arm.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0.105,-2.583,0.035),
+    },
+    ]);
     p_walk_right_forearm.setKeys([
-        { frame: 0, value:   DegToRad(-6.4, 36.9, 64.2)},
-        { frame: 50, value:   DegToRad(-6.4, 36.9, 64.2)},
-        { frame: 100, value:  DegToRad(-6.4, 36.9, 64.2)},
+        { frame: 0, value: new BABYLON.Vector3(-0.112,0.644,1.121),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-0.112,0.644,1.121),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-0.112,0.644,1.121),
+    },
     ]);
-
     p_walk_right_handthumb.setKeys([
-        { frame: 0, value:   DegToRad(-53.5, -2, 3.6)},
-        { frame: 50, value:  DegToRad(-53.5, -2, 3.6)},
-        { frame: 100, value:  DegToRad(-53.5, -2, 3.6)},
+        { frame: 0, value: new BABYLON.Vector3(-0.934,-0.035,0.063),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-0.934,-0.035,0.063),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-0.934,-0.035,0.063),
+    },
     ]);
-
-
-
-    p_walk_hips_ctrl.setKeys([{ frame: 0, value: DegToRad(-2, -180, -180)}]);
-    p_walk_hips.setKeys([{ frame: 0, value: DegToRad(0, 154, -180)}]);
     p_walk_up_left_leg.setKeys([
-        { frame: 0, value:   DegToRad(-31.7, 157.4, 170)},
-        { frame: 50, value:  DegToRad(63.57, 162.9, -175.1)},
-        { frame: 100, value:  DegToRad(-31.7, 157.4, 170)},
-    ]);
-    p_walk_left_leg.setKeys([
-        { frame: 0, value:   DegToRad(84, -146.7, -160.5)},
-        { frame: 50, value:  DegToRad(30, 12.7, -2.3)},
-        { frame: 100, value: DegToRad(84, -146.7, -160.5)},
-    ]);
-    p_walk_left_foot.setKeys([
-        { frame: 0, value:   DegToRad(-86.7, 35.8, -26.7)},
-        { frame: 50, value:  DegToRad(-10.8, -12.9, 18.6)},
-        { frame: 100, value:  DegToRad(-86.7, 35.8, -26.7)},
+        { frame: 0, value: new BABYLON.Vector3(-0.642,3.138,3.401),
+    },
+        { frame: 45, value: new BABYLON.Vector3(1.11,3.142,3.307),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-0.64,3.14,3.4),
+    },
     ]);
     p_walk_up_right_leg.setKeys([
-        { frame: 0, value:   DegToRad(48.5, 164.1, -161.5)},
-        { frame: 50, value:  DegToRad(-29.1, 143.2, 155.9)},
-        { frame: 100, value:  DegToRad(48.5, 164.1, -161.5)},
+        { frame: 0, value: new BABYLON.Vector3(0.846,2.864,-2.819),
+    },
+        { frame: 52, value: new BABYLON.Vector3(-0.508,2.499,-2.868),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.846,2.864,-2.819),
+    },
     ]);
-    p_walk_right_leg.setKeys([ 
-        { frame: 0, value:   DegToRad(40.2, 0, -5.4)},
-        { frame: 50, value:  DegToRad(71.35, -55.7, -58.5)},
-        { frame: 100, value:  DegToRad(40.2, 0, -5.4)},
+    p_walk_hips_ctrl.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(-0.035,-3.142,-3.142),
+    },
+    ]);
+    p_walk_hips.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0,2.688,-3.142),
+    },
+    ]);
+    p_walk_left_leg.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(1.466,-2.56,-2.801),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.524,0.222,-0.04),
+    },
+        { frame: 100, value: new BABYLON.Vector3(1.466,-2.56,-2.801),
+    },
+    ]);
+    p_walk_right_leg.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0.702,0,-0.094),
+    },
+        { frame: 50, value: new BABYLON.Vector3(1.245,-0.972,-1.021),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.702,0,-0.094),
+    },
     ]);
     p_walk_right_foot.setKeys([
-        { frame: 0, value:   DegToRad(-35.1, 21.0, -8.24)},
-        { frame: 50, value:  DegToRad(-39.1, 21.8, -8.7)},
-        { frame: 100, value:  DegToRad(-35.1, 21.0, -8.24)},
+        { frame: 0, value: new BABYLON.Vector3(-1.513,0.625,-0.466),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-0.188,-0.225,0.325),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-1.513,0.625,-0.466),
+    },
     ]);
+    p_walk_left_foot.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(-0.613,0.367,-0.144),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-0.682,0.38,-0.152),
+    },
+        { frame: 100, value: new BABYLON.Vector3(-0.613,0.367,-0.144),
+    },
+    ]);
+    p_walk_toes.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0.429,3.002,0),
+    },
+    ]);
+    p_walk_toes.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0.429,3.002,0),
+    },
+    ]);
+    p_walk_neck.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0,-0.548,0.192),
+    },
+        { frame: 50, value: new BABYLON.Vector3(-0.262,-0.593,0.199),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0,-0.548,0.192),
+    },
+    ]);
+    p_walk_spine.setKeys([
+        { frame: 0, value: new BABYLON.Vector3(0.384,0,0),
+    },
+        { frame: 50, value: new BABYLON.Vector3(0.192,0,0),
+    },
+        { frame: 100, value: new BABYLON.Vector3(0.384,0,0),
+    },
+    ]);
+    
+    
 
     
     p_walk_toes.setKeys([{ frame: 0, value: DegToRad(24.6, 172, 0)}]);
@@ -342,7 +397,7 @@ function loadPlayerAnimations(player) {
 
 
     // return a dictionary with all the animation groups
-    return {"rest": p_rest_anim};
+    return {"rest": p_rest_anim,"walk": p_walk_anim};
 }
 
 function DegToRad(x,y,z){

@@ -6,14 +6,9 @@ function getAxes(m) { // returns the columns of the rotation matrix m
     return [x,y,z];
 }
 function Player(assets,scene,input,planet) {
-
-    const PLAYER_STATES = {
-        STILL: 0,
-        
-    }
-
     const FWD_SPEED = 0.2;
-    const STRAFE_SPEED = 0.1;
+    const STRAFE_SPEED = 0.2;
+
     this.scene = scene;
     // this.mesh = assets.mesh;
     this.mesh = scene.getMeshById(assets);
@@ -27,7 +22,16 @@ function Player(assets,scene,input,planet) {
     this.input = input;
 
     this.anims = loadPlayerAnimations(this);
-    this.anims["rest"].play(true);
+    this.isMoving = false;
+
+
+    this.anims["rest"].start(true,0.4,0,100);
+    this.anims["walk"].start(true,1,0,100);
+    this.rest_weight = 1;
+    this.move_weight = 0;
+    this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
+    this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
+    
 
     // control keypresses everytime you render the frame
     // maybe add the callback directly in the player update function
@@ -50,11 +54,21 @@ function Player(assets,scene,input,planet) {
             var rotAngle = (new BABYLON.Vector2(straight,strafe)).length() * this.deltaTime;
             var rotAxis = getAxes(this.mesh.computeWorldMatrix())[0] 
             this.planet.rotateAround(BABYLON.Vector3.Zero(),rotAxis,rotAngle)
-
+            this.isMoving = true;
+        } else {
+            this.isMoving = false;
         }
 
         // update animations
-
+        if (this.isMoving) {
+            this.move_weight = BABYLON.Scalar.Lerp(this.move_weight,1,0.2);
+            this.rest_weight = BABYLON.Scalar.Lerp(this.rest_weight,0,0.2);
+        } else {
+            this.move_weight = BABYLON.Scalar.Lerp(this.move_weight,0,0.2);
+            this.rest_weight = BABYLON.Scalar.Lerp(this.rest_weight,1,0.2);
+        }
+        this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
+        this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
         // handle collisions
     }); 
     

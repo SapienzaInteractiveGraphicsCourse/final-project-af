@@ -20,7 +20,8 @@ function Enemy(scene,environment,player) {
                         { frame: 50,  value: 1.5},
                         { frame: 100, value: 1.0}
                     ]);
-                    var easing = new BABYLON.SineEase();
+                    var easing = new BABYLON.CubicEase();
+                    easing.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT)
 
                     this.floatingAnimation.setEasingFunction(easing);
                     this.enemyAssets.animations.push(this.floatingAnimation)
@@ -60,5 +61,13 @@ function Enemy(scene,environment,player) {
 
     this.scene.onBeforeRenderObservable.add(() => {
         // here add enemy behavior
+
+        var player_position = this.player.position ; 
+
+        this.enemies.forEach(enemy => {
+            var position = this.position;
+            var movDir = player_position.sub(position); movDir.normalize();
+            
+        });
     });
 }
