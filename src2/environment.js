@@ -75,10 +75,9 @@ function Environment(scene) {
         planetMat.specularColor = new BABYLON.Color3(0,0,0);
             
         const R = 30.0;
-        var planet_rotation =  new BABYLON.Vector3(Math.PI/2 , Math.PI/2, Math.PI/2);
         this.planet = BABYLON.MeshBuilder.CreateSphere("planet", {diameter:R*2}, scene);
         this.planet.radius = R;
-        this.planet.rotation = planet_rotation;
+
     
         this.planet.material = planetMat;
 
