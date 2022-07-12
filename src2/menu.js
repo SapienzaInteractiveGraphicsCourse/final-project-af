@@ -6,13 +6,26 @@ function Menu(game) {
     camera.setTarget(BABYLON.Vector3.Zero());
     camera.attachControl(this.canvas, true);
     
+    //var volume = BABYLON.Engine.audioEngine.setGlobalVolume(1);
+
+    var music = new BABYLON.Sound("Music", "./res/sounds/menu-song.wav", this.scene, null, {
+        loop: true,
+        autoplay: true
+      });
+
+    var hammer = new BABYLON.Sound("click", "./res/sounds/hammer.wav", this.scene);
+
+    window.addEventListener("mousedown", function(evt) {
+        if (evt.button === 0) {
+            hammer.play();
+        }
+      });
+
+    
+
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
     this.advancedTexture = advancedTexture;
-
-    var flag_music = 1;
-    var flag_sound = 1;
-    var flag_light = 0.0;
 
     var rect1 = new BABYLON.GUI.Rectangle();
     rect1.width = "700px";
@@ -56,8 +69,8 @@ function Menu(game) {
     rectSpace1.width = 0.5;
     rectSpace1.height = "40px";
     panel.addControl(rectSpace1);  
-
-    var button2 = BABYLON.GUI.Button.CreateSimpleButton("Options_button", "Options");
+    
+    var button2 = BABYLON.GUI.Button.CreateSimpleButton("Options_button", "Rules");
     button2.thickness = 3;
     button2.width = 0.5;
     button2.height = "40px";
@@ -67,7 +80,7 @@ function Menu(game) {
     button2.color = "#303233";
     button2.background = "#8c8f91";
     panel.addControl(button2);
-    
+
     var rectSpace2 = new BABYLON.GUI.Rectangle();
     rectSpace2.alpha = 0;
     rectSpace2.width = 0.5;
@@ -101,20 +114,22 @@ function Menu(game) {
     button4.color = "#303233";
     button4.background = "#8c8f91";
     panel.addControl(button4); 
+
     
     var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
     image_steampunk.width = 0.9;
     image_steampunk.height = 0.95;
     grid.addControl(image_steampunk,0,1);
+    
 
     var welcome_text = new BABYLON.GUI.TextBlock();
     welcome_text.width = 0.7;
     welcome_text.height = 0.7;
-    welcome_text.text = "Welcome!";
-    welcome_text.color = "white";
-    welcome_text.fontSize = 18;
+    welcome_text.text = wellcome_text();
+    welcome_text.color = "gold";
+    welcome_text.fontSize = 34;
     welcome_text.textWrapping = 1;
-    welcome_text.textHorizontalAlignment = 0;
+    welcome_text.textHorizontalAlignment = 2;
     welcome_text.textVerticalAlignment = 0;
     grid.addControl(welcome_text,0,1);
 
@@ -136,11 +151,37 @@ function Menu(game) {
     button2.onPointerClickObservable.add(function () {
         flag_buttons = 2;
         set_botton_colour (button1,button2,button3,button4,flag_buttons);
-
+    
         var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
         image_steampunk.width = 0.9;
         image_steampunk.height = 0.95;
         grid.addControl(image_steampunk,0,1);
+
+        var sv = new BABYLON.GUI.ScrollViewer(null, true);
+        sv.width = 0.65;
+        sv.height = 0.7;
+        sv.thickness = 0;
+        sv.color = "black";
+        sv.thumbImage = new BABYLON.GUI.Image("thumb", "res/textures/metal.jpg");
+        sv.thumbLength = 0.50;
+        sv.thumbHeight = 1.0;
+        grid.addControl(sv, 0, 1);
+
+        var rc = new BABYLON.GUI.Rectangle();
+        rc.thickness = 0;
+        rc.width = 1;
+        rc.height = 1.3;
+        sv.addControl(rc);
+    
+        var text2 = new BABYLON.GUI.TextBlock();
+        text2.text = rules_text();
+        text2.color = "white";
+        text2.fontSize = 18;
+        text2.textWrapping = 1;
+        text2.textHorizontalAlignment = 0;
+        text2.textVerticalAlignment = 0;
+        rc.addControl(text2);
+
     });
 
     button3.onPointerClickObservable.add(function () {
@@ -153,7 +194,7 @@ function Menu(game) {
         grid.addControl(image_steampunk,0,1);
 
         var sv = new BABYLON.GUI.ScrollViewer(null, true);
-        sv.width = 0.7;
+        sv.width = 0.6;
         sv.height = 0.7;
         sv.thickness = 0;
         sv.color = "black";
@@ -165,17 +206,17 @@ function Menu(game) {
         var rc = new BABYLON.GUI.Rectangle();
         rc.thickness = 0;
         rc.width = 1;
-        rc.height = 2;
+        rc.height = 1;
         sv.addControl(rc);
     
         var text1 = new BABYLON.GUI.TextBlock();
-        text1.text = " Qui si potrebbe mettere  tutti i comandi base! \n  Ad esempio: \n  - Come muoversi \n  - Come sparare \n  - Etc...";
+        text1.text = commands_text();
         text1.color = "white";
         text1.fontSize = 18;
         text1.textWrapping = 1;
         text1.textHorizontalAlignment = 0;
         text1.textVerticalAlignment = 0;
-        sv.addControl(text1);
+        rc.addControl(text1);
 
     });
     
@@ -192,37 +233,19 @@ function Menu(game) {
         selectBox.width = 0.7;
         selectBox.height = 0.8;
         selectBox.thickness = 0;
-        selectBox.fontSize = 18;
+        selectBox.fontSize = 14;
         selectBox.color = "white";
         selectBox.headerColor = "white";
         selectBox.buttonColor = "gray";
         selectBox.labelColor = "red";
 
-        selectBox.addGroup(audioGroup);
+        selectBox.addGroup(volumeGroup);
         selectBox.addGroup(lightGroup);
         selectBox.addGroup(diffGroup);
+        
     
         grid.addControl(selectBox, 0, 1);  
     });
-    
-
-    var setMusic = function(isChecked) {   
-        if (isChecked) {
-            flag_music = 1;
-        }
-        else {
-            flag_music = 0;
-        }
-    }
-
-    var setSound = function(isChecked) {   
-        if (isChecked) {
-            flag_sound = 1;
-        }
-        else {
-            flag_sound = 0;
-        }
-    }
 
 
     var setLight = function(but) {   
@@ -253,9 +276,9 @@ function Menu(game) {
         }
     }
 
-    var audioGroup = new BABYLON.GUI.CheckboxGroup("Audio");
-    audioGroup.addCheckbox("Music", setMusic, true);
-    audioGroup.addCheckbox("Sound", setSound,true);
+    var setVolume = function(value){
+        BABYLON.Engine.audioEngine.setGlobalVolume(value);
+    }
 
     var lightGroup = new BABYLON.GUI.RadioGroup("Illumination");
     lightGroup.addRadio("Low", setLight);
@@ -266,7 +289,12 @@ function Menu(game) {
     diffGroup.addRadio("Low", setDiff, true);
     diffGroup.addRadio("Medium", setDiff);
     diffGroup.addRadio("High", setDiff);
+
+    var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
 }
+
+
 
 function get_settings_panel(advancedTexture){
     
