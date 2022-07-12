@@ -36,12 +36,14 @@ function Player(assets,scene,input,planet) {
     this.move_weight = 0;
     this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
     this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
-    
 
-    // control keypresses everytime you render the frame
-    // maybe add the callback directly in the player update function
+    this.cm = scene.getMeshById("p_characterMedium")
+    this.cm.checkCollisions = true;
+
+
+
     this.scene.onBeforeRenderObservable.add(() => {
-
+        this.camera.upVector = this.mesh.up;
         this.input.updateFromKeyboard();
         // get delta time
         this.deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
@@ -73,7 +75,12 @@ function Player(assets,scene,input,planet) {
         this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
 
         // handle collisions
-
+        // I can also do it in the enemy loop function, I don't know if there's a difference
+        var enemies = this.scene.getMeshesById("enemy")
+        enemies.forEach(e =>{ 
+        if (e != null && this.cm.intersectsMesh(e,true)) {
+            console.log("collision with enemy!!")
+        }});
     }); 
     
 }   

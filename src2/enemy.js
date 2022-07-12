@@ -32,7 +32,7 @@ function Enemy(scene,environment,player) {
                 });
     }
     this.instanceEnemy = function(where) {
-        var index = "e" + this.enemies.length;
+        var index = "enemy";
         var base = new BABYLON.TransformNode(index+"base",this.scene)
 
         var newInstance = this.enemyAssets.createInstance(index);
@@ -56,9 +56,6 @@ function Enemy(scene,environment,player) {
 
         base.position = where;
         base.rotationQuaternion = new BABYLON.Quaternion();
-
-        
-        
 
         this.enemies.push(base);
     }
