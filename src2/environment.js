@@ -60,10 +60,11 @@ function Environment(scene) {
 
         // TODO look at Promise.all() to see if it's faster
         await this.loadTreeAssets(this.scene);
-        //await this.loadDeadTreeAssets(this.scene);
-        this.instanceTrees(20);
-        //this.instanceDeadTrees(10);
-        
+        await this.loadSkullAssets(this.scene);
+        await this.loadSkull2Assets(this.scene);
+        this.instanceTrees(30);
+        this.instanceSkull(20);
+
         await this.loadHouseAssets(this.scene);
         this.houseAssets.position = new BABYLON.Vector3( R-1.3, 0, 5.5);
         this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/15, -Math.PI/2);
@@ -77,6 +78,7 @@ function Environment(scene) {
         this.tractorAssets.parent = this.upperworld;
 
         await this.loadStoneAssets(this.scene);
+        
         this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
         this.stoneAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 + Math.PI/9);
         this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
@@ -228,11 +230,19 @@ function Environment(scene) {
             });
     }
 
-    this.loadDeadTreeAssets =  async function(scene) {
-        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/", "low-poly-dead-tree.babylon", scene).then(
+    this.loadSkullAssets =  async function(scene) {
+        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/skull-babylon/", "skull.babylon", scene).then(
             (result) =>{
-                this.deadtreeAssets = result.meshes[0];
-                this.deadtreeAssets.isVisible = false; // i want to instance it
+                this.skullAssets = result.meshes[0];
+                this.skullAssets.isVisible = false; // i want to instance it
+            });
+    }
+
+    this.loadSkull2Assets =  async function(scene) {
+        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/lava-egg-babylon/", "lava-egg.babylon", scene).then(
+            (result) =>{
+                this.skull2Assets = result.meshes[0];
+                this.skull2Assets.isVisible = false; // i want to instance it
             });
     }
 
@@ -291,11 +301,27 @@ function Environment(scene) {
         }
     }
 
-    this.instanceDeadTrees = function(n) {
+    this.instanceSkull = function(n) {
         for (var index = 0; index < n; index++) {
-            var newInstance = this.deadtreeAssets.createInstance("i" + index);
+            var newInstance = this.skullAssets.createInstance("i" + index);
             newInstance.parent = this.planet;
-            newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
+            newInstance.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
+            var randomPosition = getRandomLoc2(this.planet.radius);
+            var rotation = getRotation(randomPosition);
+
+            newInstance.position = randomPosition;
+
+            rotation.decompose(null,newInstance.rotationQuaternion,null,null);
+
+        }
+    }
+
+
+    this.instanceSkull2 = function(n) {
+        for (var index = 0; index < n; index++) {
+            var newInstance = this.stoneAssets.createInstance("i" + index);
+            newInstance.parent = this.planet;
+            newInstance.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
             var randomPosition = getRandomLoc2(this.planet.radius);
             var rotation = getRotation(randomPosition);
 
@@ -368,6 +394,15 @@ function getRandomLoc(R){
     return new BABYLON.Vector3(x,y,z);
 }
 
+function getRandomLoc2(R){
+    var phi = Math.random()*Math.PI;
+    var theta = Math.random()*Math.PI - Math.PI;
+    var x = (R+0.3)*Math.sin(phi)*Math.cos(theta);
+    var y = (R+0.3)*Math.sin(phi)*Math.sin(theta);
+    var z = (R+0.3)*Math.cos(phi)                ;
+    return new BABYLON.Vector3(x,y,z);
+}
+
 function getRotation(position){
 
     var z = BABYLON.Vector3.Normalize(position);
@@ -382,13 +417,4 @@ function getRotation(position){
     m.setRow(1,new BABYLON.Vector4(-z._x,-z._y,-z._z,0))
 
     return m;
-}
-
-function getRandomLoc2(R){
-    var phi = Math.random()*Math.PI;
-    var theta = Math.random()*Math.PI + Math.PI/2;
-    var x = R*Math.sin(phi)*Math.cos(theta);
-    var y = R*Math.sin(phi)*Math.sin(theta);
-    var z = R*Math.cos(phi)                ;
-    return new BABYLON.Vector3(x,y,z);
 }
