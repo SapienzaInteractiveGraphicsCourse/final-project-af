@@ -21,7 +21,8 @@ function Game() {
 
         await this.environment.load(this);
         await this.loadCharacterAssets();
-        
+        this.environment.shooting(this);
+
         this.input = new PlayerInput(this.scene);
         this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet.id);
         this.scene.activeCamera = this.player.camera;

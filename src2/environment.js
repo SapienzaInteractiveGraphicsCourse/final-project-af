@@ -12,72 +12,15 @@ function Environment(scene) {
         var skybox = createSkyBox(scene);
         skybox.setTime(0);
 
-        var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
-
-        var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
-        buttonQuit.thickness = 4;
-        buttonQuit.width = 0.1;
-        buttonQuit.height = 0.1;
-        buttonQuit.cornerRadius = 540;
-        buttonQuit.children[0].color = "white";
-        buttonQuit.children[0].fontSize = 30;
-        buttonQuit.color = "#303233";
-        buttonQuit.background = "red";
-        buttonQuit.horizontalAlignment = 1;
-        buttonQuit.verticalAlignment = 0;
-        advancedTexture2.addControl(buttonQuit); 
-        console.log(game);
-        buttonQuit.onPointerClickObservable.add(function () {
-
-        SecondaryMenu(advancedTexture2,game);
-        });
-
-        
-
-        var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", this.scene, null, {
-            loop: true,
-            autoplay: true
-          });
-
-        var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", this.scene);
-        var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", this.scene);
-        var walking_sound = new BABYLON.Sound("gunshot", "./res/sounds/walking.wav", this.scene);
-
-
-        window.addEventListener("mousedown", function(evt) {
-            if (evt.button === 0) {
-                hammer_sound.play();
-            }
-        });
-
-        window.addEventListener("keydown", function (evt) {
-            // Press space key to fire
-            if (evt.keyCode === 32) {
-                gunshot_sound.play();
-            }
-        });
-
-        window.addEventListener("keydown", function (evt) {
-            // Press space key to fire
-            if (evt.keyCode === 87 || evt.keyCode === 83 || evt.keyCode === 65|| evt.keyCode === 68 ) {
-                if(!walking_sound.isPlaying){
-                    walking_sound.play(); 
-                }
- 
-            }
-        });
-
-
-
-
         var planetMat = new BABYLON.StandardMaterial("mat1", scene);
         planetMat.ambientTexture = new BABYLON.Texture("./res/textures/mars.jpg",scene);
         planetMat.specularColor = new BABYLON.Color3(0,0,0);
             
         const R = 30.0;
+        var planet_rotation =  new BABYLON.Vector3(Math.PI/2 , Math.PI/2, Math.PI/2);
         this.planet = BABYLON.MeshBuilder.CreateSphere("planet", {diameter:R*2}, scene);
         this.planet.radius = R;
-
+        this.planet.rotation = planet_rotation;
     
         this.planet.material = planetMat;
 
@@ -93,9 +36,43 @@ function Environment(scene) {
         //this.houseAssets.parent = planet
 
         // every object has the planet as its parent
+
+        this.sounds(this.scene);
+
+        this.GUI_environment(game, this.scene);
+        
     }
 
+    this.shooting = async function(scene){
+        var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", scene);
 
+        window.addEventListener("keydown", function () {
+            window.addEventListener("keydown", function (evt) {
+                // Press space key to fire
+                if (evt.keyCode === 32) {
+                    gunshot_sound.play();
+                    var bullet = BABYLON.Mesh.CreateSphere('bullet', 3, 0.3, scene);
+                    var gunMesh = scene.getNodeById("gun");
+                    var startPos = gunMesh.position;
+
+                    bullet.position = new BABYLON.Vector3(startPos.x, startPos.y, startPos.z);
+                    //bullet.material = new BABYLON.StandardMaterial('texture1', this.scene);
+                    //bullet.material.diffuseColor = new BABYLON.Color3(2, 0, 0);
+
+                    var invView = new BABYLON.Matrix();
+                    this.camera.getViewMatrix().invertToRef(invView);
+                    var direction = BABYLON.Vector3.TransformNormal(new BABYLON.Vector3(0, 0, -1), invView);
+                    direction.normalize();
+
+                    scene.registerBeforeRender(function () {
+                        bullet.position.addInPlace(direction);
+                });
+                }
+            });
+            
+
+        });
+    }
     // TODO save all path in a file where you put all const variables
     this.loadTreeAssets =  async function(scene) {
         return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/tree-05-babylon/", "tree-05.babylon", scene).then(
@@ -123,12 +100,60 @@ function Environment(scene) {
 
         }
     }
+
+    this.sounds = function(scene){
+        var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
+            loop: true,
+            autoplay: true,
+            volume:1
+        });
+
+        var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", scene);
+        var walking_sound = new BABYLON.Sound("gunshot", "./res/sounds/walking.wav", scene);
+
+
+        window.addEventListener("mousedown", function(evt) {
+            if (evt.button === 0) {
+                hammer_sound.play();
+            }
+        });
+
+        window.addEventListener("keydown", function (evt) {
+            // Press space key to fire
+            if (evt.keyCode === 87 || evt.keyCode === 83 || evt.keyCode === 65|| evt.keyCode === 68 ) {
+                if(!walking_sound.isPlaying){
+                    walking_sound.play(); 
+                }
+ 
+            }
+        });
+    }
+
+
+    this.GUI_environment = function(game,scene){
+        var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
+
+        var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
+        buttonQuit.thickness = 4;
+        buttonQuit.width = 0.1;
+        buttonQuit.height = 0.1;
+        buttonQuit.cornerRadius = 540;
+        buttonQuit.children[0].color = "white";
+        buttonQuit.children[0].fontSize = 30;
+        buttonQuit.color = "#303233";
+        buttonQuit.background = "red";
+        buttonQuit.horizontalAlignment = 1;
+        buttonQuit.verticalAlignment = 0;
+        advancedTexture2.addControl(buttonQuit); 
+        buttonQuit.onPointerClickObservable.add(function () {SecondaryMenu(advancedTexture2,game);});
+    }
 }
+
 
 
 function getRandomLoc(R){
     var phi = Math.random()*Math.PI;
-    var theta = Math.random()*2*Math.PI;
+    var theta = Math.random()*Math.PI;
     var x = R*Math.sin(phi)*Math.cos(theta);
     var y = R*Math.sin(phi)*Math.sin(theta);
     var z = R*Math.cos(phi)                ;
