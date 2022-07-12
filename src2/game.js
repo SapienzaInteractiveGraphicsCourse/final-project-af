@@ -19,7 +19,7 @@ function Game() {
         this.scene = new BABYLON.Scene(this.engine);
         this.environment = new Environment(this.scene);
 
-        await this.environment.load();
+        await this.environment.load(this);
         await this.loadCharacterAssets();
         
         this.input = new PlayerInput(this.scene);

@@ -1,15 +1,36 @@
 // this class is used to define the game scene except player and zombies
 
 function Environment(scene) {
+    //this.game = game;
     this.scene = scene;
 
     this.treeAssets = null;
     this.houseAssets = null;
 
 
-    this.load = async function() { // Here you load the world assets
+    this.load = async function(game) { // Here you load the world assets
         var skybox = createSkyBox(scene);
         skybox.setTime(0);
+
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
+
+        var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "QUIT");
+        buttonQuit.thickness = 4;
+        buttonQuit.width = 0.1;
+        buttonQuit.height = 0.1;
+        buttonQuit.cornerRadius = 540;
+        buttonQuit.children[0].color = "white";
+        buttonQuit.children[0].fontSize = 30;
+        buttonQuit.color = "#303233";
+        buttonQuit.background = "red";
+        buttonQuit.horizontalAlignment = 1;
+        buttonQuit.verticalAlignment = 0;
+        advancedTexture.addControl(buttonQuit); 
+        console.log(game);
+        buttonQuit.onPointerClickObservable.add(function () {
+
+        SecondaryMenu(advancedTexture,game);
+        });
 
         var planetMat = new BABYLON.StandardMaterial("mat1", scene);
         planetMat.ambientTexture = new BABYLON.Texture("./res/textures/mars.jpg",scene);
