@@ -32,6 +32,7 @@ function Player(assets,scene,input,planet,game) {
 
     this.anims["rest"].start(true,0.4,0,100);
     this.anims["walk"].start(true,1,0,100);
+
     this.rest_weight = 1;
     this.move_weight = 0;
     this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
@@ -39,11 +40,14 @@ function Player(assets,scene,input,planet,game) {
 
     this.cm = scene.getMeshById("p_characterMedium")
     this.cm.checkCollisions = true;
+    this.hittable = true;
+    this.UNHITTABLE_TIME = 1500; // ms
+    this.canShoot = true;
+    this.RELOAD_TIME = 1000; // ms
 
     this.bullet = new Bullet(this);
 
     this.scene.onBeforeRenderObservable.add(() => {
-        this.camera.upVector = this.mesh.up;
         this.input.updateFromKeyboard();
         // get delta time
         this.deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
@@ -77,17 +81,33 @@ function Player(assets,scene,input,planet,game) {
         // handle collisions
         // I can also do it in the enemy loop function, I don't know if there's a difference
         var enemies = this.scene.getMeshesById("enemy")
-        enemies.forEach(e =>{ 
-        if (e != null && this.cm.intersectsMesh(e,true)) {
-            // collision with enemy
-            this.life.lostLife();
-        }});
-
+         
+        if (this.hittable && enemies != []) for(var i=0;i<enemies.length; i+=1){ 
+            var e = enemies[i];
+            if (this.cm.intersectsMesh(e,true)) {
+                // collision with enemy
+                if (this.hittable) {
+                    this.life.lostLife();
+                    this.hittable = false;
+        
+                    setTimeout(function() {g.player.hittable = true},this.UNHITTABLE_TIME);
+                    // play animation
+                    this.anims["pain"].start(false,5,0,100);
+                    this.anims["pain"].setWeightForAllAnimatables(100);
+                    break;
+                }
+            }
+        };
+        
         // shoot bullets
         if (this.input.shoot) {
-            // shoot
-            this.bullet.instanceBullet(this.scene.getNodeById("gun").getAbsolutePosition(),this.mesh.rotationQuaternion);
-        } // else do nothing
+            if (this.canShoot) {
+                // shoot
+                this.bullet.instanceBullet(this.scene.getNodeById("gun").getAbsolutePosition(),this.mesh.rotationQuaternion);
+                this.canShoot = false;
+                setTimeout(function() {g.player.canShoot = true},this.RELOAD_TIME);
+            }   
+        }
     }); 
     
 }   
