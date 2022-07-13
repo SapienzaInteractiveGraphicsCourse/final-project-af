@@ -6,7 +6,7 @@ function Enemy(scene,environment,player) {
 
     this.environment = environment;
 
-    const STEP_LENGTH = 0.001;
+    this.STEP_LENGTH = 0.01;
 
     this.enemies = [];
 
@@ -67,15 +67,20 @@ function Enemy(scene,environment,player) {
         var player_position_planet = BABYLON.Vector3.TransformCoordinates(this.player_position,BABYLON.Matrix.Invert(m));
         this.enemies.forEach(enemy => {
             // face the player
+
             var m = OrientEnemy(enemy.position,player_position_planet);
-    
-            const rotation = new BABYLON.Quaternion();
+            
             m.decompose(null,enemy.rotationQuaternion,null,null);
             //enemy.rotation = rotation.toEulerAngles();
 
             // and take a step
+            
+            // DOES NOT WORK IN THE UNDERWORLD;
+            //enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH); 
+
             if (enemy.position.subtract(player_position_planet).length() > 0.5)
-                enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH);
+            enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
+            enemy.position = enemy.position.normalize().scale(this.environment.planet.radius);
 
         });
     });
