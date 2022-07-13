@@ -59,57 +59,67 @@ function Environment(scene) {
 
         // TODO look at Promise.all() to see if it's faster
         await this.loadTreeAssets(this.scene);
-        //await this.loadDeadTreeAssets(this.scene);
+        await this.loadSkullAssets(this.scene);
         this.instanceTrees(20);
-        //this.instanceDeadTrees(10);
-        
+        this.instanceSkull(3);
+
         await this.loadHouseAssets(this.scene);
         this.houseAssets.position = new BABYLON.Vector3( R-1.2, 0, 5.5);
         this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
+        
         this.houseAssets.parent = this.upperworld;
+        this.houseAssets.checkCollisions = true;
 
         await this.loadTractorAssets(this.scene);
         this.tractorAssets.position = new BABYLON.Vector3( R-2.4, -10, 5.5);
         this.tractorAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 -Math.PI/9);
         this.tractorAssets.scaling = new BABYLON.Vector3(0.7,0.7,0.7);
         this.tractorAssets.parent = this.upperworld;
+        this.tractorAssets.checkCollisions = true;
 
         await this.loadStoneAssets(this.scene);
         this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
         this.stoneAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 + Math.PI/9);
         this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
         this.stoneAssets.parent = this.upperworld;
+        this.stoneAssets.checkCollisions = true;
 
         await this.loadPCrystalAssets(this.scene);
         this.pcrystalAssets.position = new BABYLON.Vector3( 0, R+3.5,0);
         this.pcrystalAssets.rotation = new BABYLON.Vector3(0,0,0);
         this.pcrystalAssets.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
         this.pcrystalAssets.parent = this.upperworld;
+        this.pcrystalAssets.checkCollisions = true;
 
         await this.loadSmallCrystalAssets(this.scene);
         this.smallcrystalAssets.position = new BABYLON.Vector3( 5.7, -R-1,-4);
         this.smallcrystalAssets.rotation = new BABYLON.Vector3(0,Math.PI/2,Math.PI);
         this.smallcrystalAssets.scaling = new BABYLON.Vector3(30,30,30);
         this.smallcrystalAssets.parent = this.upperworld;
+        this.smallcrystalAssets.checkCollisions = true;
 
         await this.loadRubyAssets(this.scene);
         this.rubyAssets.position = new BABYLON.Vector3( 0, R-1.2 ,0);
         this.rubyAssets.rotation = new BABYLON.Vector3(0,0,0);
         this.rubyAssets.scaling = new BABYLON.Vector3(4,4,4);
         this.rubyAssets.parent = this.underworld;
+        this.rubyAssets.checkCollisions = true;
 
         await this.loadGraveCrystalAssets(this.scene);
         this.gravecrystalAssets.position = new BABYLON.Vector3( -10, R-1.2 ,8);
         this.gravecrystalAssets.rotation = new BABYLON.Vector3(0,0,0);
         this.gravecrystalAssets.scaling = new BABYLON.Vector3(17,17,17);
         this.gravecrystalAssets.parent = this.underworld;
+        this.gravecrystalAssets.checkCollisions = true;
 
         await this.loadGraveAssets(this.scene);
         this.graveAssets.position = new BABYLON.Vector3( -15, R-2 ,0);
         this.graveAssets.rotation = new BABYLON.Vector3(- Math.PI/6,Math.PI/2 ,Math.PI/12);
         this.graveAssets.scaling = new BABYLON.Vector3(9,9,9);
         this.graveAssets.parent = this.underworld;
+        this.graveAssets.checkCollisions = true;
+
 
 
         var redMat = new BABYLON.StandardMaterial("redMat", scene);
@@ -196,14 +206,16 @@ function Environment(scene) {
             (result) =>{
                 this.treeAssets = result.meshes[0];
                 this.treeAssets.isVisible = false; // i want to instance it
+                this.treeAssets.checkCollisions = true;
             });
     }
 
-    this.loadDeadTreeAssets =  async function(scene) {
-        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/", "low-poly-dead-tree.babylon", scene).then(
+    this.loadSkullAssets =  async function(scene) {
+        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/skull-babylon/", "skull.babylon", scene).then(
             (result) =>{
-                this.deadtreeAssets = result.meshes[0];
-                this.deadtreeAssets.isVisible = false; // i want to instance it
+                this.skullAssets = result.meshes[0];
+                this.skullAssets.isVisible = false; // i want to instance it
+                this.skullAssets.checkCollisions = true;
             });
     }
 
@@ -262,11 +274,11 @@ function Environment(scene) {
         }
     }
 
-    this.instanceDeadTrees = function(n) {
+    this.instanceSkull = function(n) {
         for (var index = 0; index < n; index++) {
-            var newInstance = this.deadtreeAssets.createInstance("i" + index);
-            newInstance.parent = this.planet;
-            newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
+            var newInstance = this.skullAssets.createInstance("i" + index);
+            newInstance.parent = this.underworld;
+            newInstance.scaling = new BABYLON.Vector3(3,3,3);
             var randomPosition = getRandomLoc2(this.planet.radius);
             var rotation = getRotation(randomPosition);
 
@@ -413,9 +425,9 @@ function getRotation(position){
 
 function getRandomLoc2(R){
     var phi = Math.random()*Math.PI;
-    var theta = Math.random()*Math.PI + Math.PI/2;
-    var x = R*Math.sin(phi)*Math.cos(theta);
-    var y = R*Math.sin(phi)*Math.sin(theta);
-    var z = R*Math.cos(phi)                ;
+    var theta = Math.random()*Math.PI;
+    var x = (R+1)*Math.sin(phi)*Math.cos(theta);
+    var y = (R+1)*Math.sin(phi)*Math.sin(theta);
+    var z = (R+1)*Math.cos(phi)                ;
     return new BABYLON.Vector3(x,y,z);
 }
