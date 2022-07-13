@@ -1,8 +1,8 @@
 function Enemy(scene,environment,player) {
 
     this.scene = scene;
-    this.player = player.mesh
-    this.player_position = this.player.position.clone(); 
+    this.player = player
+    this.player_position = this.player.mesh.position.clone(); 
 
     this.environment = environment;
 
@@ -88,6 +88,7 @@ function Enemy(scene,environment,player) {
             bullets.forEach(b =>{ 
                 if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
                     console.log("bullet HIT")
+                    this.player.life.kills += 1; // increment kill counter
                     enemy.dispose();
                     this.enemies.splice(index,1);
                 }
