@@ -66,7 +66,7 @@ function loadPlayerAnimations(player) {
                                                    BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 
-                                            
+    //right shoulder  left arm   spine                          
 
     //    And set the keys with the help of inspector (Shift+Ctrl+Alt+I)
     p_rest_spine.setKeys([
@@ -396,8 +396,191 @@ function loadPlayerAnimations(player) {
     p_walk_anim.addTargetedAnimation(p_walk_spine,     player.scene.getNodeById("p_Spine"));
 
 
+
+    //////////// PAIN ////////////////////////////////////
+
+    // 1) Define an animation group
+    var p_pain_anim = new BABYLON.AnimationGroup("p_pain_anim"); 
+
+    // 2) Define an animation for each joint
+    
+    var p_pain_left_shoulder = new BABYLON.Animation("p_pain_left_shoulder","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_left_arm = new BABYLON.Animation("p_pain_left_arm","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_left_forearm = new BABYLON.Animation("p_pain_left_forearm","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);                                               
+    var p_pain_left_hand = new BABYLON.Animation("p_pain_left_hand","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    
+    var p_pain_right_shoulder = new BABYLON.Animation("p_pain_right_shoulder","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_right_arm = new BABYLON.Animation("p_pain_right_arm","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_right_forearm = new BABYLON.Animation("p_pain_right_forearm","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);                                               
+    var p_pain_right_handthumb = new BABYLON.Animation("p_pain_right_handthumb","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+    var p_pain_hips_ctrl = new BABYLON.Animation("p_pain_hips_ctrl","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_hips =      new BABYLON.Animation("p_pain_hips","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_up_left_leg =    new BABYLON.Animation("p_pain_up_left_leg","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_left_leg =       new BABYLON.Animation("p_pain_left_leg","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_up_right_leg =    new BABYLON.Animation("p_pain_up_right_leg","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_right_leg =       new BABYLON.Animation("p_pain_right_leg","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_left_foot =      new BABYLON.Animation("p_pain_left_foot","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_right_foot =      new BABYLON.Animation("p_pain_right_foot","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_toes =      new BABYLON.Animation("p_pain_toes","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_spine =      new BABYLON.Animation("p_pain_spine","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    var p_pain_neck =      new BABYLON.Animation("p_pain_neck","rotation",frame_rate,
+                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+    //right shoulder  left arm   spine   left up leg     left leg    left foot         neck            
+
+    //    And set the keys with the help of inspector (Shift+Ctrl+Alt+I)
+    p_pain_spine.setKeys([
+        { frame: 0, value: DegToRad(11,0,0)},
+        { frame: 50, value:  DegToRad(-30,0,0)},
+        { frame: 100, value: DegToRad(11,0,0)},
+    ]);
+
+    p_pain_neck.setKeys([
+        { frame: 0, value: DegToRad(-15,-34,11.4)},
+        { frame: 50, value:  DegToRad(2.75,-30.5,11.2)},
+        { frame: 100, value: DegToRad(-15,-34,11.4)},
+    ]);
+
+    p_pain_left_shoulder.setKeys([
+        { frame: 0, value: DegToRad(-70,123.87,175)},
+        { frame: 50, value: DegToRad(-70,123.87,175)},
+        { frame: 100, value: DegToRad(-70,123.87,175)},
+    ]);
+    p_pain_left_arm.setKeys([
+        { frame: 0, value: DegToRad(42.3,131.4,-24)},
+        { frame: 50, value: DegToRad(56.1,-131.5,138.8)},
+        { frame: 100, value:  DegToRad(42.3,131.4,-24)},
+    ]);
+    p_pain_left_forearm.setKeys([
+        { frame: 0, value: DegToRad(44.14,7.7,16.5)},
+        { frame: 50, value:  DegToRad(68.3,-55.6,-29.6)},
+        { frame: 100, value:  DegToRad(44.14,7.7,16.5)},
+    ]);
+    p_pain_left_hand.setKeys([
+        { frame: 0, value: DegToRad(11, 82.5,11.4)},
+        { frame: 50, value:  DegToRad(11, 82.5,11.4)},
+        { frame: 100, value:  DegToRad(11, 82.5,11.4)},
+    ]);
+
+
+    p_pain_right_shoulder.setKeys([
+        { frame: 0, value:   DegToRad(61.2,155.5, -101.7)},
+        { frame: 50, value:   DegToRad(61.2,100.5, -101.7)},
+        { frame: 100, value:   DegToRad(61.2,155.5, -101.7)},
+    ]);
+
+    p_pain_right_arm.setKeys([
+        { frame: 0, value:   DegToRad(-3.6, -172, 12)},
+        { frame: 50, value:   DegToRad(-2, -148.7, -18.43)},
+        { frame: 100, value:   DegToRad(-3.6, -172, 12)},
+    ]);
+
+    p_pain_right_forearm.setKeys([
+        { frame: 0, value:   DegToRad(-6.4, 36.9, 64.2)},
+        { frame: 50, value:   DegToRad(-6.4, 36.9, 64.2)},
+        { frame: 100, value:  DegToRad(-6.4, 36.9, 64.2)},
+    ]);
+
+    p_pain_right_handthumb.setKeys([
+        { frame: 0, value:   DegToRad(-53.5, -2, 3.6)},
+        { frame: 50, value:  DegToRad(-53.5, -2, 3.6)},
+        { frame: 100, value:  DegToRad(-53.5, -2, 3.6)},
+    ]);
+
+
+    p_pain_hips_ctrl.setKeys([{ frame: 0, value: DegToRad(-2, -180, -180)}]);
+    p_pain_hips.setKeys([{ frame: 0, value: DegToRad(0, 154, -180)}]);
+
+    p_pain_up_left_leg.setKeys([
+        { frame: 0, value:   DegToRad(10.9, 163.4, 166.2)},
+        { frame: 50, value:   DegToRad(-23.6, 172, 165.2)},
+        { frame: 100, value:   DegToRad(10.9, 163.4, 166.2)},
+    ]);
+
+    p_pain_left_leg.setKeys([
+        { frame: 0, value:   DegToRad(23.7, 11.3, 18.4)},
+        { frame: 50, value:   DegToRad(-23.4, 11.9, 18.6)},
+        { frame: 100, value:   DegToRad(23.7, 11.3, 18.4)},
+    ]);
+
+    p_pain_left_foot.setKeys([
+        { frame: 0, value:   DegToRad(-63.4, -21.5, -9.1)},
+        { frame: 50, value:   DegToRad(-24.5, -27.8, -4.5)},
+        { frame: 100, value:   DegToRad(-63.4, -21.5, -9.1)},
+    ]);
+
+
+    p_pain_up_right_leg.setKeys([{ frame: 0, value:   DegToRad(18.5, 140.8, -178.7)}, ]);
+    p_pain_right_leg.setKeys([{ frame: 0, value:   DegToRad(24.7, 1.6, -4.5)}]);
+    p_pain_right_foot.setKeys([{ frame: 0, value:   DegToRad(-53.1, 0.4, 0)},]);
+    p_pain_toes.setKeys([{ frame: 0, value: new BABYLON.Vector3(0.43,3,0)}]);
+
+
+    // 3) Link the animation to the joint
+    p_pain_anim.addTargetedAnimation(p_pain_spine,player.scene.getNodeById("p_Spine"));
+    p_pain_anim.addTargetedAnimation(p_pain_neck,player.scene.getNodeById("p_Neck"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_shoulder,player.scene.getNodeById("p_LeftShoulder"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_arm,player.scene.getNodeById("p_LeftArm"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_forearm,player.scene.getNodeById("p_LeftForeArm"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_hand,player.scene.getNodeById("p_LeftHand"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_shoulder,player.scene.getNodeById("p_RightShoulder"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_arm,player.scene.getNodeById("p_RightArm"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_forearm,player.scene.getNodeById("p_RightForeArm"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_handthumb,player.scene.getNodeById("p_RightHandThumb1"));
+
+    p_pain_anim.addTargetedAnimation(p_pain_up_left_leg,   player.scene.getNodeById("p_LeftUpLeg"));
+    p_pain_anim.addTargetedAnimation(p_pain_up_right_leg,   player.scene.getNodeById("p_RightUpLeg"));
+    p_pain_anim.addTargetedAnimation(p_pain_hips_ctrl,player.scene.getNodeById("p_HipsCtrl"));
+    p_pain_anim.addTargetedAnimation(p_pain_hips,     player.scene.getNodeById("p_Hips"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_leg,      player.scene.getNodeById("p_LeftLeg"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_leg,      player.scene.getNodeById("p_RightLeg"));
+    p_pain_anim.addTargetedAnimation(p_pain_left_foot,     player.scene.getNodeById("p_LeftFoot"));
+    p_pain_anim.addTargetedAnimation(p_pain_right_foot,     player.scene.getNodeById("p_RightFoot"));
+    p_pain_anim.addTargetedAnimation(p_pain_toes,     player.scene.getNodeById("p_LeftToes"));
+    p_pain_anim.addTargetedAnimation(p_pain_toes,     player.scene.getNodeById("p_RightToes"));
+
+    
+
     // return a dictionary with all the animation groups
-    return {"rest": p_rest_anim,"walk": p_walk_anim};
+    return {"rest": p_rest_anim,"walk": p_walk_anim, "pain": p_pain_anim};
 }
 
 function DegToRad(x,y,z){
