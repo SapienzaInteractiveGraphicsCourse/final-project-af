@@ -30,6 +30,41 @@ function Game() {
 
         this.enemy = new Enemy(this.scene,this.environment,this.player);
         await this.enemy.loadEnemy();
+
+        // from https://www.babylonjs-playground.com/#PLW9V9#19
+        // camera pointer lock code 
+        var isLocked = false;
+        // On click event, request pointer lock
+        var game = this
+        this.scene.onPointerDown = function (evt) {
+            
+            //true/false check if we're locked, faster than checking pointerlock on each single click.
+            if (!isLocked) {
+                game.canvas.requestPointerLock = game.canvas.requestPointerLock || game.canvas.msRequestPointerLock || game.canvas.mozRequestPointerLock || game.canvas.webkitRequestPointerLock;
+                if (game.canvas.requestPointerLock) {
+                    game.canvas.requestPointerLock();
+                }
+            }
+
+        };
+        var pointerlockchange = function () {
+            var controlEnabled = document.mozPointerLockElement || document.webkitPointerLockElement || document.msPointerLockElement || document.pointerLockElement || null;
+            
+            // If the user is already locked
+            if (!controlEnabled) {
+                //camera.detachControl(canvas);
+                isLocked = false;
+            } else {
+                //camera.attachControl(canvas);
+                isLocked = true;
+            }
+        };
+        // Attach events to the document
+        document.addEventListener("pointerlockchange", pointerlockchange, false);
+        document.addEventListener("mspointerlockchange", pointerlockchange, false);
+        document.addEventListener("mozpointerlockchange", pointerlockchange, false);
+        document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+    
     }
 
     // this gets called when you transition into the actual game
