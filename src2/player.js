@@ -79,8 +79,8 @@ function Player(assets,scene,input,planet,game) {
         var enemies = this.scene.getMeshesById("enemy")
         enemies.forEach(e =>{ 
         if (e != null && this.cm.intersectsMesh(e,true)) {
-            console.log("collision with enemy!!")
-            // TODO have a state variable
+            // collision with enemy
+            this.life.lostLife();
         }});
 
         // shoot bullets

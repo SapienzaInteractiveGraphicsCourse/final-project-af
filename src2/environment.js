@@ -189,70 +189,6 @@ function Environment(scene) {
         
     }
 
-    this.shooting = async function(scene){
-
-    //    var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("gun UI");
-    //    var fineviewer1 = new BABYLON.GUI.Rectangle();
-    //    fineviewer1.width = "3px";
-    //    fineviewer1.height = "40px";
-    //    fineviewer1.color = "black"
-    //    fineviewer1.background = "black";
-    //    fineviewer1.verticalAlignment = 2;
-    //    fineviewer1.horizontalAlignment = 2;
-    //    advancedTexture3.addControl(fineviewer1);
-//
-    //    var fineviewer2 = new BABYLON.GUI.Rectangle();
-    //    fineviewer2.width = "40px";
-    //    fineviewer2.height = "3px";
-    //    fineviewer2.color = "black"
-    //    fineviewer2.background = "black";
-    //    fineviewer2.verticalAlignment = 2;
-    //    fineviewer2.horizontalAlignment = 2;
-    //    advancedTexture3.addControl(fineviewer2);
-//
-    //    var fineviewer3 = new BABYLON.GUI.Ellipse();
-    //    fineviewer3.width = "40px";
-    //    fineviewer3.height = "40px";
-    //    fineviewer3.thickness = 3
-    //    fineviewer3.color = "black"
-    //    fineviewer3.verticalAlignment = 2;
-    //    fineviewer3.horizontalAlignment = 2;
-    //    advancedTexture3.addControl(fineviewer3);
-//
-    //    fineviewer1.linkWithMesh("gun");
-    //    fineviewer2.linkWithMesh("gun");
-    //    fineviewer3.linkWithMesh("gun");
-//
-    //    
-    //    var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", scene);
-    //    
-    //    window.addEventListener("keydown", function () {
-    //        window.addEventListener("keydown", function (evt) {
-    //            // Press space key to fire
-    //            if (evt.keyCode === 32) {
-    //                gunshot_sound.play();
-    //                var bullet = BABYLON.Mesh.CreateSphere('bullet', 3, 0.3, scene);
-    //                var gunMesh = scene.getNodeById("gun");
-    //                var startPos = gunMesh.position;
-//
-    //                bullet.position = new BABYLON.Vector3(startPos.x, startPos.y, startPos.z);
-    //                //bullet.material = new BABYLON.StandardMaterial('texture1', this.scene);
-    //                //bullet.material.diffuseColor = new BABYLON.Color3(2, 0, 0);
-//
-    //                var invView = new BABYLON.Matrix();
-    //                this.camera.getViewMatrix().invertToRef(invView);
-    //                var direction = BABYLON.Vector3.TransformNormal(new BABYLON.Vector3(0, 0, -1), invView);
-    //                direction.normalize();
-//
-    //                scene.registerBeforeRender(function () {
-    //                    bullet.position.addInPlace(direction);
-    //            });
-    //            }
-    //        });
-    //        
-//
-    //    });
-    }
     // TODO save all path in a file where you put all const variables
     this.loadTreeAssets =  async function(scene) {
         return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/tree-05-babylon/", "tree-05.babylon", scene).then(
@@ -432,17 +368,17 @@ function Environment(scene) {
         var life1 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
         life1.width = 1;
         life1.height = 1;
-        grid.addControl(life1,0,0);
+        grid.addControl(life1,0,0); this.life1 = life1;
 
         var life2 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
         life2.width = 1;
         life2.height = 1;
-        grid.addControl(life2,0,1);
+        grid.addControl(life2,0,1); this.life2 = life2;
 
         var life3 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
         life3.width = 1;
         life3.height = 1;
-        grid.addControl(life3,0,2);
+        grid.addControl(life3,0,2); this.life3 = life3;
 
     }
 }

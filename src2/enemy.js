@@ -85,7 +85,6 @@ function Enemy(scene,environment,player) {
 
             // bullet collision
             var bullets = this.scene.getMeshesById("bulletInstance")
-            console.log(bullets.length)
             bullets.forEach(b =>{ 
             if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
                 console.log("collision with bulletInstance!!")

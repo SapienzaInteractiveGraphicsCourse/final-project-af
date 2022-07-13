@@ -4,14 +4,18 @@ function playerLife (game) {
     this.time = 0;
     this.kills = 0;
     this.game = game;
-    this.lostLife = function(){
-        numberLife -=1;
-        if(numberLife == 0){
-          this.game.goToLost();
-        }
-
+    this.game.environment.life1.isVisible = true;
+    this.game.environment.life2.isVisible = true;
+    this.game.environment.life3.isVisible = true;
+    this.lostLife = async function(){
+        this.numberLife -=1;
+        if(this.numberLife <= 2) this.game.environment.life3.isVisible = false; 
+        if(this.numberLife <= 1) this.game.environment.life2.isVisible = false;
+        if(this.numberLife == 0) this.game.environment.life1.isVisible = false;
     }
-  }
+    this.game.scene.onAfterRenderObservable.add(() => {
+      if (this.numberLife == 0) this.game.goToLost();});
+}
 
 
   function deathMenu(game){
