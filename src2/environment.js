@@ -178,6 +178,7 @@ function Environment(scene) {
         this.smoke.maxEmitPower = 1;
         this.smoke.updateSpeed = 0.005;
         this.smoke.parent = this.underworld;
+        this.smoke.isLocal = true;
         this.smoke.start();
 
         this.sounds(this.scene);

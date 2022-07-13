@@ -96,20 +96,23 @@ function Bullet(player) {
     this.player = player
     this.scene = player.scene;
     this.planet = player.planet;
-    this.mesh = new BABYLON.Mesh.CreateSphere('bullet', 3, 0.3, this.scene);
+    this.mesh = new BABYLON.Mesh.CreateSphere('bullet', 2, 0.3, this.scene);
     
     // set bullet material ... 
+    
+    var bulletMat = new BABYLON.StandardMaterial("mat", this.scene);
+    bulletMat.ambientTexture = new BABYLON.Texture("./res/textures/metal.jpg",this.scene);
+    bulletMat.specularColor = new BABYLON.Color3(0,0,0);
 
-
-    //
+    this.mesh.material = bulletMat;
     this.mesh.visible = false;
 
     this.bullets = [];
 
-    this.sound = undefined;
+    this.sound = new BABYLON.Sound("click", "./res/sounds/gunshot.wav", this.scene);
 
-    this.BULLET_LIFETIME = 1000;
-    this.STEP_LENGTH = 3;
+    this.BULLET_LIFETIME = 100;
+    this.STEP_LENGTH = 1.5;
 
     this.orientBullet = function(bullet) {
 
@@ -128,6 +131,7 @@ function Bullet(player) {
 
     this.instanceBullet = function(where) {
         var newInstance = this.mesh.createInstance("bulletInstance");
+        this.sound.play();
         var m = this.planet.computeWorldMatrix(true)
         var where_planet = BABYLON.Vector3.TransformCoordinates(where,BABYLON.Matrix.Invert(m));
         
