@@ -6,7 +6,7 @@ function getAxes(m) { // returns the columns of the rotation matrix m
     return [x,y,z];
 }
 
-function Player(assets,scene,input,planet) {
+function Player(assets,scene,input,planet,game) {
     const FWD_SPEED = 0.2;
     const STRAFE_SPEED = 0.2;
 
@@ -22,7 +22,7 @@ function Player(assets,scene,input,planet) {
     this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0.8, 10, new BABYLON.Vector3(0,this.planet.radius+2,0));
     this.camera.inputs.attached.pointers.buttons = [0,1] // disable right click panning
 
-
+    this.life = new playerLife(game);
     this.input = input;
 
     this.anims = loadPlayerAnimations(this);

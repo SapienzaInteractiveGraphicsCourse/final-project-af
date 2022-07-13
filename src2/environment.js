@@ -6,7 +6,6 @@ function Environment(scene) {
 
     this.treeAssets = null;
     this.houseAssets = null;
-    this.intensity = 1;
 
 
     this.load = async function(game) { // Here you load the world assets
@@ -60,14 +59,13 @@ function Environment(scene) {
 
         // TODO look at Promise.all() to see if it's faster
         await this.loadTreeAssets(this.scene);
-        await this.loadSkullAssets(this.scene);
-        await this.loadSkull2Assets(this.scene);
-        this.instanceTrees(30);
-        this.instanceSkull(20);
-
+        //await this.loadDeadTreeAssets(this.scene);
+        this.instanceTrees(20);
+        //this.instanceDeadTrees(10);
+        
         await this.loadHouseAssets(this.scene);
-        this.houseAssets.position = new BABYLON.Vector3( R-1.3, 0, 5.5);
-        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/15, -Math.PI/2);
+        this.houseAssets.position = new BABYLON.Vector3( R-1.2, 0, 5.5);
+        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
         this.houseAssets.parent = this.upperworld;
 
@@ -78,7 +76,6 @@ function Environment(scene) {
         this.tractorAssets.parent = this.upperworld;
 
         await this.loadStoneAssets(this.scene);
-        
         this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
         this.stoneAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 + Math.PI/9);
         this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
@@ -144,8 +141,9 @@ function Environment(scene) {
 
         this.ring = BABYLON.MeshBuilder.CreateTorus("torus", {thickness: 10, diameter: 100, tessellation:32});
         this.ring.material = sandMat;
-        this.ring.position = new BABYLON.Vector3(-100,-30,-100);
         this.ring.rotation.x = -Math.PI/6;
+        this.ring.parent = this.brownPlanet;
+
 
     
     
@@ -159,7 +157,6 @@ function Environment(scene) {
 
         this.smoke = new BABYLON.ParticleSystem("particles", 2500 , this.scene);
         this.smoke.manualEmitCount = this.smoke.getCapacity();
-        this.smoke.isLocal = true;
         this.smoke.minEmitBox = new BABYLON.Vector3(-5, 1, -5); // Starting all from
         this.smoke.maxEmitBox = new BABYLON.Vector3(5, 1, 5); // To...
         this.smoke.particleTexture = fogTexture.clone();
@@ -180,46 +177,81 @@ function Environment(scene) {
         this.smoke.minEmitPower = .5;
         this.smoke.maxEmitPower = 1;
         this.smoke.updateSpeed = 0.005;
-        this.smoke.parent = this.smokeFountain;
+        this.smoke.parent = this.underworld;
         this.smoke.start();
-
 
         this.sounds(this.scene);
 
-        this.GUI_environment(game, this.scene);
+        
+
+        //this.playerStatus = new playerLife(3,10,true);
+        //console.log(playerLife);
         
     }
 
     this.shooting = async function(scene){
-        
-        var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", scene);
 
-        window.addEventListener("keydown", function () {
-            window.addEventListener("keydown", function (evt) {
-                // Press space key to fire
-                if (evt.keyCode === 32) {
-                    gunshot_sound.play();
-                    var bullet = BABYLON.Mesh.CreateSphere('bullet', 3, 0.3, scene);
-                    var gunMesh = scene.getNodeById("gun");
-                    var startPos = gunMesh.position;
-
-                    bullet.position = new BABYLON.Vector3(startPos.x, startPos.y, startPos.z);
-                    //bullet.material = new BABYLON.StandardMaterial('texture1', this.scene);
-                    //bullet.material.diffuseColor = new BABYLON.Color3(2, 0, 0);
-
-                    var invView = new BABYLON.Matrix();
-                    this.camera.getViewMatrix().invertToRef(invView);
-                    var direction = BABYLON.Vector3.TransformNormal(new BABYLON.Vector3(0, 0, -1), invView);
-                    direction.normalize();
-
-                    scene.registerBeforeRender(function () {
-                        bullet.position.addInPlace(direction);
-                });
-                }
-            });
-            
-
-        });
+    //    var advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("gun UI");
+    //    var fineviewer1 = new BABYLON.GUI.Rectangle();
+    //    fineviewer1.width = "3px";
+    //    fineviewer1.height = "40px";
+    //    fineviewer1.color = "black"
+    //    fineviewer1.background = "black";
+    //    fineviewer1.verticalAlignment = 2;
+    //    fineviewer1.horizontalAlignment = 2;
+    //    advancedTexture3.addControl(fineviewer1);
+//
+    //    var fineviewer2 = new BABYLON.GUI.Rectangle();
+    //    fineviewer2.width = "40px";
+    //    fineviewer2.height = "3px";
+    //    fineviewer2.color = "black"
+    //    fineviewer2.background = "black";
+    //    fineviewer2.verticalAlignment = 2;
+    //    fineviewer2.horizontalAlignment = 2;
+    //    advancedTexture3.addControl(fineviewer2);
+//
+    //    var fineviewer3 = new BABYLON.GUI.Ellipse();
+    //    fineviewer3.width = "40px";
+    //    fineviewer3.height = "40px";
+    //    fineviewer3.thickness = 3
+    //    fineviewer3.color = "black"
+    //    fineviewer3.verticalAlignment = 2;
+    //    fineviewer3.horizontalAlignment = 2;
+    //    advancedTexture3.addControl(fineviewer3);
+//
+    //    fineviewer1.linkWithMesh("gun");
+    //    fineviewer2.linkWithMesh("gun");
+    //    fineviewer3.linkWithMesh("gun");
+//
+    //    
+    //    var gunshot_sound  = new BABYLON.Sound("gunshot", "./res/sounds/gunshot.wav", scene);
+    //    
+    //    window.addEventListener("keydown", function () {
+    //        window.addEventListener("keydown", function (evt) {
+    //            // Press space key to fire
+    //            if (evt.keyCode === 32) {
+    //                gunshot_sound.play();
+    //                var bullet = BABYLON.Mesh.CreateSphere('bullet', 3, 0.3, scene);
+    //                var gunMesh = scene.getNodeById("gun");
+    //                var startPos = gunMesh.position;
+//
+    //                bullet.position = new BABYLON.Vector3(startPos.x, startPos.y, startPos.z);
+    //                //bullet.material = new BABYLON.StandardMaterial('texture1', this.scene);
+    //                //bullet.material.diffuseColor = new BABYLON.Color3(2, 0, 0);
+//
+    //                var invView = new BABYLON.Matrix();
+    //                this.camera.getViewMatrix().invertToRef(invView);
+    //                var direction = BABYLON.Vector3.TransformNormal(new BABYLON.Vector3(0, 0, -1), invView);
+    //                direction.normalize();
+//
+    //                scene.registerBeforeRender(function () {
+    //                    bullet.position.addInPlace(direction);
+    //            });
+    //            }
+    //        });
+    //        
+//
+    //    });
     }
     // TODO save all path in a file where you put all const variables
     this.loadTreeAssets =  async function(scene) {
@@ -230,19 +262,11 @@ function Environment(scene) {
             });
     }
 
-    this.loadSkullAssets =  async function(scene) {
-        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/skull-babylon/", "skull.babylon", scene).then(
+    this.loadDeadTreeAssets =  async function(scene) {
+        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/", "low-poly-dead-tree.babylon", scene).then(
             (result) =>{
-                this.skullAssets = result.meshes[0];
-                this.skullAssets.isVisible = false; // i want to instance it
-            });
-    }
-
-    this.loadSkull2Assets =  async function(scene) {
-        return BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/lava-egg-babylon/", "lava-egg.babylon", scene).then(
-            (result) =>{
-                this.skull2Assets = result.meshes[0];
-                this.skull2Assets.isVisible = false; // i want to instance it
+                this.deadtreeAssets = result.meshes[0];
+                this.deadtreeAssets.isVisible = false; // i want to instance it
             });
     }
 
@@ -301,27 +325,11 @@ function Environment(scene) {
         }
     }
 
-    this.instanceSkull = function(n) {
+    this.instanceDeadTrees = function(n) {
         for (var index = 0; index < n; index++) {
-            var newInstance = this.skullAssets.createInstance("i" + index);
+            var newInstance = this.deadtreeAssets.createInstance("i" + index);
             newInstance.parent = this.planet;
-            newInstance.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
-            var randomPosition = getRandomLoc2(this.planet.radius);
-            var rotation = getRotation(randomPosition);
-
-            newInstance.position = randomPosition;
-
-            rotation.decompose(null,newInstance.rotationQuaternion,null,null);
-
-        }
-    }
-
-
-    this.instanceSkull2 = function(n) {
-        for (var index = 0; index < n; index++) {
-            var newInstance = this.stoneAssets.createInstance("i" + index);
-            newInstance.parent = this.planet;
-            newInstance.scaling = new BABYLON.Vector3(0.5,0.5,0.5);
+            newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
             var randomPosition = getRandomLoc2(this.planet.radius);
             var rotation = getRotation(randomPosition);
 
@@ -366,6 +374,22 @@ function Environment(scene) {
     this.GUI_environment = function(game,scene){
         var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
 
+
+        //var buttonLost = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Lost");
+        //buttonLost.thickness = 4;
+        //buttonLost.width = 0.1;
+        //buttonLost.height = 0.1;
+        //buttonLost.cornerRadius = 540;
+        //buttonLost.children[0].color = "white";
+        //buttonLost.children[0].fontSize = 30;
+        //buttonLost.color = "#303233";
+        //buttonLost.background = "red";
+        //buttonLost.horizontalAlignment = 2;
+        //buttonLost.verticalAlignment = 2;
+        //buttonLost.alpha = 0.8;
+        //advancedTexture2.addControl(buttonLost); 
+        //buttonLost.onPointerClickObservable.add(function () {game.goToLost()});
+
         var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
         buttonQuit.thickness = 4;
         buttonQuit.width = 0.1;
@@ -403,6 +427,8 @@ function Environment(scene) {
         grid.addColumnDefinition(0.5);
         rect.addControl(grid);
 
+        var life_flag = 3;
+
         var life1 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
         life1.width = 1;
         life1.height = 1;
@@ -432,15 +458,6 @@ function getRandomLoc(R){
     return new BABYLON.Vector3(x,y,z);
 }
 
-function getRandomLoc2(R){
-    var phi = Math.random()*Math.PI;
-    var theta = Math.random()*Math.PI - Math.PI;
-    var x = (R+0.3)*Math.sin(phi)*Math.cos(theta);
-    var y = (R+0.3)*Math.sin(phi)*Math.sin(theta);
-    var z = (R+0.3)*Math.cos(phi)                ;
-    return new BABYLON.Vector3(x,y,z);
-}
-
 function getRotation(position){
 
     var z = BABYLON.Vector3.Normalize(position);
@@ -455,4 +472,13 @@ function getRotation(position){
     m.setRow(1,new BABYLON.Vector4(-z._x,-z._y,-z._z,0))
 
     return m;
+}
+
+function getRandomLoc2(R){
+    var phi = Math.random()*Math.PI;
+    var theta = Math.random()*Math.PI + Math.PI/2;
+    var x = R*Math.sin(phi)*Math.cos(theta);
+    var y = R*Math.sin(phi)*Math.sin(theta);
+    var z = R*Math.cos(phi)                ;
+    return new BABYLON.Vector3(x,y,z);
 }

@@ -8,11 +8,11 @@ function rules_text(){
     text = "Do not let the enemies touch your house or kill you. \n";
     text += " \n";
     text += "The enemies will spawn form a red ruby at the opposite pole of the planet.";
-    text +=  "Their goal can be either kill you or get to the house.\n";
+    text +=  "Their goal can either be kill you or get to the house.\n";
     text += " \n";
     text += "In order to defeat them, you can shoot them with the gun. \n";
     text += " \n";
-    text += "During the game, you can move where ever you want in the planet, as long as the enemys do not get to you or your house.";
+    text += "During the game, you can move where ever you want in the planet, as long as an enemy gets to you or your house.";
     return text;
 }
 

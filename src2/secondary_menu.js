@@ -100,7 +100,7 @@ function SecondaryMenu(advancedTexture2,game) {
     welcome_text.height = 0.7;
     welcome_text.text = "What's wrong soldier?!";
     welcome_text.color = "gold";
-    welcome_text.fontSize = 30;
+    welcome_text.fontSize = 34;
     welcome_text.textWrapping = 1;
     welcome_text.textHorizontalAlignment = 2;
     welcome_text.textVerticalAlignment = 2;
@@ -231,7 +231,7 @@ function SecondaryMenu(advancedTexture2,game) {
 
 
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
-	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 1)
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
 }
 
 

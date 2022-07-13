@@ -21,10 +21,10 @@ function Game() {
 
         await this.environment.load(this);
         await this.loadCharacterAssets();
-        this.environment.shooting(this);
+        this.environment.GUI_environment(this, this.scene);
 
         this.input = new PlayerInput(this.scene);
-        this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet.id);
+        this.player = new Player(this.playerAsset.id, this.scene, this.input,this.environment.planet.id, this);
         this.scene.activeCamera = this.player.camera;
         this.player.camera.attachControl(this.canvas, true);
 
@@ -44,9 +44,34 @@ function Game() {
         this.state = GAME_STATES.PLAYING;
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    this.setUpLost = async function() {
+        this.scene = new BABYLON.Scene(this.engine);
+        this.environment = new Environment(this.scene);
+        await this.environment.load(this);
+        this.lostMenu = deathMenu(this);
+        
+    }
+
+    // this gets called when you transition into the actual game
+    this.goToLost = async function() {
+        this.engine.displayLoadingUI(); // display loading
+        if (this.scene != null) {this.scene.detachControl(); // inhibit any input
+                                    this.scene.dispose();}     // delete old scene
+
+        await this.setUpLost();
+
+        this.engine.hideLoadingUI();
+        this.state = GAME_STATES.LOST;
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     this.setUpMenu = async function() {
         this.scene = new BABYLON.Scene(this.engine);
-
+        this.environment = new Environment(this.scene);
+        await this.environment.load(this);
         var menu = new Menu(this);        
     }
 

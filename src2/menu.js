@@ -27,15 +27,6 @@ function Menu(game) {
 
     this.advancedTexture = advancedTexture;
 
-    var rect = new BABYLON.GUI.Rectangle();
-    rect.width = "100px";
-    rect.height = "80px";
-    rect.thickness = 5;
-    rect.color = "red";
-    rect.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT; 
-    rect.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP; 
-    advancedTexture.addControl(rect);
-
     var rect1 = new BABYLON.GUI.Rectangle();
     rect1.width = "700px";
     rect1.height = "500px";
@@ -48,7 +39,7 @@ function Menu(game) {
     var image_rock = new BABYLON.GUI.Image("but", "res/textures/rock_wall.jpg");
     image_rock.width = 1;
     image_rock.height = 1;
-    rect1.addControl(image_rock, 0, 1);
+    rect1.addControl(image_rock);
     
     var grid = new BABYLON.GUI.Grid();   
     grid.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
@@ -136,7 +127,7 @@ function Menu(game) {
     welcome_text.height = 0.7;
     welcome_text.text = wellcome_text();
     welcome_text.color = "gold";
-    welcome_text.fontSize = 30;
+    welcome_text.fontSize = 34;
     welcome_text.textWrapping = 1;
     welcome_text.textHorizontalAlignment = 2;
     welcome_text.textVerticalAlignment = 2;
@@ -300,7 +291,7 @@ function Menu(game) {
     diffGroup.addRadio("High", setDiff);
 
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
-	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 1)
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
 }
 
 
