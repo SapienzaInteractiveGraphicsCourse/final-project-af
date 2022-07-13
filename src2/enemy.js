@@ -6,7 +6,7 @@ function Enemy(scene,environment,player) {
 
     this.environment = environment;
 
-    this.STEP_LENGTH = 0.01;
+    this.STEP_LENGTH = 0.1;
 
     this.enemies = [];
 
@@ -36,6 +36,7 @@ function Enemy(scene,environment,player) {
         var base = new BABYLON.TransformNode(index+"base",this.scene)
 
         var newInstance = this.enemyAssets.createInstance(index);
+        newInstance.checkCollisions = true;
         newInstance.rotationQuaternion = null;
         this.scene.beginAnimation(newInstance, 0, 100, true,0.5);
         //newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
@@ -81,6 +82,14 @@ function Enemy(scene,environment,player) {
             if (enemy.position.subtract(player_position_planet).length() > 0.5)
             enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
             enemy.position = enemy.position.normalize().scale(this.environment.planet.radius);
+
+            // bullet collision
+            var bullets = this.scene.getMeshesById("bulletInstance")
+            console.log(bullets.length)
+            bullets.forEach(b =>{ 
+            if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
+                console.log("collision with bulletInstance!!")
+            }});
 
         });
     });
