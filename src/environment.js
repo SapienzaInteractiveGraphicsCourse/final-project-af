@@ -31,6 +31,7 @@ function Environment(scene) {
         this.planet = BABYLON.MeshBuilder.CreateSphere("planet", {diameter:R*2}, scene);
         this.planet.radius = R;
         this.planet.isVisible = false;
+        this.planet.rotationQuaternion = new BABYLON.Quaternion();
 
         var upperworld_rotation =  new BABYLON.Vector3( Math.PI , Math.PI/2, -Math.PI/2);
         this.upperworld = BABYLON.MeshBuilder.CreateSphere("upperworld", {diameter:R*2});
@@ -67,6 +68,7 @@ function Environment(scene) {
         this.houseAssets.position = new BABYLON.Vector3( R-1.2, 0, 5.5);
         this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
+        this.houseAssets.id = "collidable";
         
         this.houseAssets.parent = this.upperworld;
         this.houseAssets.checkCollisions = true;
@@ -77,6 +79,7 @@ function Environment(scene) {
         this.tractorAssets.scaling = new BABYLON.Vector3(0.7,0.7,0.7);
         this.tractorAssets.parent = this.upperworld;
         this.tractorAssets.checkCollisions = true;
+        this.tractorAssets.id = "collidable";
 
         await this.loadStoneAssets(this.scene);
         this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
@@ -84,6 +87,7 @@ function Environment(scene) {
         this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
         this.stoneAssets.parent = this.upperworld;
         this.stoneAssets.checkCollisions = true;
+        this.stoneAssets.id = "collidable;"
 
         await this.loadPCrystalAssets(this.scene);
         this.pcrystalAssets.position = new BABYLON.Vector3( 0, R+3.5,0);
@@ -91,6 +95,7 @@ function Environment(scene) {
         this.pcrystalAssets.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
         this.pcrystalAssets.parent = this.upperworld;
         this.pcrystalAssets.checkCollisions = true;
+        this.pcrystalAssets.id = "collidable";
 
         await this.loadSmallCrystalAssets(this.scene);
         this.smallcrystalAssets.position = new BABYLON.Vector3( 5.7, -R-1,-4);
@@ -98,6 +103,7 @@ function Environment(scene) {
         this.smallcrystalAssets.scaling = new BABYLON.Vector3(30,30,30);
         this.smallcrystalAssets.parent = this.upperworld;
         this.smallcrystalAssets.checkCollisions = true;
+        this.smallcrystalAssets.id = "collidable";
 
         await this.loadRubyAssets(this.scene);
         this.rubyAssets.position = new BABYLON.Vector3( 0, R-1.2 ,0);
@@ -105,6 +111,7 @@ function Environment(scene) {
         this.rubyAssets.scaling = new BABYLON.Vector3(4,4,4);
         this.rubyAssets.parent = this.underworld;
         this.rubyAssets.checkCollisions = true;
+        this.rubyAssets.id = "collidable";
 
         await this.loadGraveCrystalAssets(this.scene);
         this.gravecrystalAssets.position = new BABYLON.Vector3( -10, R-1.2 ,8);
@@ -112,6 +119,7 @@ function Environment(scene) {
         this.gravecrystalAssets.scaling = new BABYLON.Vector3(17,17,17);
         this.gravecrystalAssets.parent = this.underworld;
         this.gravecrystalAssets.checkCollisions = true;
+        this.gravecrystalAssets.id = "collidable";
 
         await this.loadGraveAssets(this.scene);
         this.graveAssets.position = new BABYLON.Vector3( -15, R-2 ,0);
@@ -119,7 +127,7 @@ function Environment(scene) {
         this.graveAssets.scaling = new BABYLON.Vector3(9,9,9);
         this.graveAssets.parent = this.underworld;
         this.graveAssets.checkCollisions = true;
-
+        this.graveAssets.id = "collidable";
 
 
         var redMat = new BABYLON.StandardMaterial("redMat", scene);
@@ -266,9 +274,13 @@ function Environment(scene) {
             newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
             var randomPosition = getRandomLoc(this.planet.radius);
             var rotation = getRotation(randomPosition);
-
+            newInstance.checkCollisions = true;
             newInstance.position = randomPosition;
-
+            newInstance.id = "collidable";
+            // set the bounding box to contain just the center of the tree
+            var min = new BABYLON.Vector3(-4,0,-7);
+            var max = new BABYLON.Vector3(-2,20,-5);
+            newInstance.setBoundingInfo(new BABYLON.BoundingInfo(min,max));
             rotation.decompose(null,newInstance.rotationQuaternion,null,null);
 
         }
@@ -281,9 +293,9 @@ function Environment(scene) {
             newInstance.scaling = new BABYLON.Vector3(3,3,3);
             var randomPosition = getRandomLoc2(this.planet.radius);
             var rotation = getRotation(randomPosition);
-
+            newInstance.checkCollisions = true;
             newInstance.position = randomPosition;
-
+            newInstance.id = "collidable";
             rotation.decompose(null,newInstance.rotationQuaternion,null,null);
 
         }

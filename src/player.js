@@ -48,12 +48,17 @@ function Player(assets,scene,input,planet,game) {
     this.bullet = new Bullet(this);
 
     this.scene.onBeforeRenderObservable.add(() => {
+
+        // backup old position + quaternion in case of collision
+        var pOld = this.planet.position.clone();
+        var qOld = this.planet.rotationQuaternion.clone();
+
         this.input.updateFromKeyboard();
         // get delta time
         this.deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
         var straight = FWD_SPEED*this.input.straight; // contains straight desired input
         var strafe =   STRAFE_SPEED*this.input.strafe; // contains strafe desired input
-
+        var movDir = 0;
         if (Math.abs(straight) > 0.001 || Math.abs(strafe) > 0.001) {
             movDir = Math.atan2(strafe,straight);
             this.mesh.rotate(BABYLON.Axis.Y,-this.camera.alpha + movDir - this.heading);
@@ -80,7 +85,7 @@ function Player(assets,scene,input,planet,game) {
 
         // handle collisions
         // I can also do it in the enemy loop function, I don't know if there's a difference
-        var enemies = this.scene.getMeshesById("enemy")
+        var enemies = this.scene.getMeshesById("enemy");
          
         if (this.hittable && enemies != []) for(var i=0;i<enemies.length; i+=1){ 
             var e = enemies[i];
@@ -98,6 +103,23 @@ function Player(assets,scene,input,planet,game) {
                 }
             }
         };
+
+        var obstacles = this.scene.getMeshesById("collidable");
+        if (obstacles != [] ) obstacles.forEach(obstacle => {
+            //console.log(obstacle.name);
+            if (this.cm.intersectsMesh(obstacle,true)) {
+
+                // sometimes the player can get stuck in collisions
+                // in principle, to get you you must roll back te movement
+                // but in practice the player is stuck and it does not move anymore
+                // so I roll back a lot more in order to keep it out of the obstacle bounding box
+
+                this.planet.rotateAround(BABYLON.Vector3.Zero(), this.mesh.right,-5*rotAngle);
+                // there may be better solutions like only allowing movements that do not decrease
+                // the distance btw player and object.
+            }   
+        });
+
         
         // shoot bullets
         if (this.input.shoot) {
