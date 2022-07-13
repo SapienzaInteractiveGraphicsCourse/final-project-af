@@ -1,4 +1,4 @@
-function createSkyBox(scene) {
+function createSkyBox(scene,game) {
     var skyMaterial = new BABYLON.SkyMaterial("skyMaterial", scene);
     skyMaterial.backFaceCulling = false;
 
@@ -10,7 +10,7 @@ function createSkyBox(scene) {
     sunlight_direct.intensity = 2.0;
     
     var sunlight = new BABYLON.HemisphericLight("sunlight",new BABYLON.Vector3(0, 1, 0), scene);
-    var max_intensity = 0.5;
+    var max_intensity = 1;//this.intensity;
 
     sunlight.intensity = max_intensity;
 
@@ -39,8 +39,8 @@ function createSkyBox(scene) {
         var animation_rot = new BABYLON.Animation("animation_rot","rotation.x", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 		animation_rot.setKeys(keys);
 
-        scene.stopAnimation(skybox);
-		scene.beginDirectAnimation(skybox, [sky_animation,animation_rot], 0, 100, cycle, speed);
+        skybox.getScene().stopAnimation(skybox);
+		skybox.getScene().beginDirectAnimation(skybox, [sky_animation,animation_rot], 0, 100, cycle, speed);
     }
 
     // change any property with smooth interpolation
@@ -53,8 +53,8 @@ function createSkyBox(scene) {
 		var animation = new BABYLON.Animation("animation", property, 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 		animation.setKeys(keys);
 		
-		scene.stopAnimation(skybox);
-		scene.beginDirectAnimation(skybox, [animation], 0, 100, false, 1);
+		skybox.getScene().stopAnimation(skybox);
+		skybox.getScene().beginDirectAnimation(skybox, [animation], 0, 100, false, 1);
 	};
     
 

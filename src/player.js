@@ -1,63 +1,243 @@
-var player_path = "./res/models/player/";
+function vec4to3(vec4) {return new BABYLON.Vector3(vec4.x,vec4.y,vec4.z);}
+function getAxes(m) { // returns the columns of the rotation matrix m
+    var x = vec4to3(m.getRow(0));
+    var y = vec4to3(m.getRow(1));
+    var z = vec4to3(m.getRow(2));
+    return [x,y,z];
+}
 
-function createPlayer(scene) {
-    var player = null;
-    BABYLON.SceneLoader.Append("./res/models/player/","player.gltf", scene,function(scene) {
-        player =  scene.getMeshById("__root__");
+function Player(assets,scene,input,planet,game) {
+    const FWD_SPEED = 0.2;
+    const STRAFE_SPEED = 0.2;
+
+    this.scene = scene;
+    // this.mesh = assets.mesh;
+    this.mesh = scene.getMeshById(assets);
+    this.mesh.rotationQuaternion = null;
+    this.planet = scene.getMeshById(planet);
+    this.heading = 0;
+    //this.mesh.parent = this.planet
+    this.mesh.position.y = this.planet.radius;
+
+    this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0.8, 10, new BABYLON.Vector3(0,this.planet.radius+2,0));
+    this.camera.inputs.attached.pointers.buttons = [0,1] // disable right click panning
+
+    this.life = new playerLife(game);
+    this.input = input;
+
+    this.anims = loadPlayerAnimations(this);
+    this.isMoving = false;
+
+    this.mesh.rotationQuaternion = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y,-this.camera.alpha + 1.57);
+
+    this.anims["rest"].start(true,0.4,0,100);
+    this.anims["walk"].start(true,1,0,100);
+
+    this.rest_weight = 1;
+    this.move_weight = 0;
+    this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
+    this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
+
+    this.cm = scene.getMeshById("p_characterMedium")
+    this.cm.checkCollisions = true;
+    this.hittable = true;
+    this.UNHITTABLE_TIME = 1500; // ms
+    this.canShoot = true;
+    this.RELOAD_TIME = 1000; // ms
+
+    this.bullet = new Bullet(this);
+
+    this.scene.onBeforeRenderObservable.add(() => {
+        this.input.updateFromKeyboard();
+        // get delta time
+        this.deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
+        var straight = FWD_SPEED*this.input.straight; // contains straight desired input
+        var strafe =   STRAFE_SPEED*this.input.strafe; // contains strafe desired input
+
+        if (Math.abs(straight) > 0.001 || Math.abs(strafe) > 0.001) {
+            movDir = Math.atan2(strafe,straight);
+            this.mesh.rotate(BABYLON.Axis.Y,-this.camera.alpha + movDir - this.heading);
+            this.heading =-this.camera.alpha + movDir;
+            // compute the rotation angle
+            var rotAngle = (new BABYLON.Vector2(straight,strafe)).length() * this.deltaTime;
+            
+            this.planet.rotateAround(BABYLON.Vector3.Zero(), this.mesh.right,rotAngle);
+
+
+            this.isMoving = true;
+        } else this.isMoving = false;
+
+        // update animations
+        if (this.isMoving) {
+            this.move_weight = BABYLON.Scalar.Lerp(this.move_weight,1,0.2);
+            this.rest_weight = BABYLON.Scalar.Lerp(this.rest_weight,0,0.2);
+        } else {
+            this.move_weight = BABYLON.Scalar.Lerp(this.move_weight,0,0.2);
+            this.rest_weight = BABYLON.Scalar.Lerp(this.rest_weight,1,0.2);
+        }
+        this.anims["rest"].setWeightForAllAnimatables(this.rest_weight);
+        this.anims["walk"].setWeightForAllAnimatables(this.move_weight);
+
+        // handle collisions
+        // I can also do it in the enemy loop function, I don't know if there's a difference
+        var enemies = this.scene.getMeshesById("enemy")
+         
+        if (this.hittable && enemies != []) for(var i=0;i<enemies.length; i+=1){ 
+            var e = enemies[i];
+            if (this.cm.intersectsMesh(e,true)) {
+                // collision with enemy
+                if (this.hittable) {
+                    this.life.lostLife();
+                    this.hittable = false;
+        
+                    setTimeout(function() {g.player.hittable = true},this.UNHITTABLE_TIME);
+                    // play animation
+                    this.anims["pain"].start(false,5,0,100);
+                    this.anims["pain"].setWeightForAllAnimatables(100);
+                    break;
+                }
+            }
+        };
+        
+        // shoot bullets
+        if (this.input.shoot) {
+            if (this.canShoot) {
+                // shoot
+                this.bullet.instanceBullet(this.scene.getNodeById("gun").getAbsolutePosition(),this.mesh.rotationQuaternion);
+                this.canShoot = false;
+                setTimeout(function() {g.player.canShoot = true},this.RELOAD_TIME);
+            }   
+        }
+    }); 
     
-        // player and zombies have equal hierarchical trees and mesh names, 
-        // they can only be distinguished by their unique id
-        // this is why I rename all nodes and meshes with a prefix
-        rename_with_prefix(player,"p_");
+}   
 
-        // place the model in the world
-        // use "characterMedium" to orient the player in world frame
-        let base = scene.getMeshById("p_characterMedium");
-        base.rotation.y = Math.PI;
+function Bullet(player) {
+    this.player = player
+    this.scene = player.scene;
+    this.planet = player.planet;
+    this.mesh = new BABYLON.Mesh.CreateSphere('bullet', 2, 0.3, this.scene);
+    
+    // set bullet material ... 
+    
+    var bulletMat = new BABYLON.StandardMaterial("mat", this.scene);
+    bulletMat.ambientTexture = new BABYLON.Texture("./res/textures/metal.jpg",this.scene);
+    bulletMat.specularColor = new BABYLON.Color3(0,0,0);
+
+    this.mesh.material = bulletMat;
+    this.mesh.visible = false;
+
+    this.bullets = [];
+
+    this.sound = new BABYLON.Sound("click", "./res/sounds/gunshot.wav", this.scene);
+
+    this.BULLET_LIFETIME = 100;
+    this.STEP_LENGTH = 1.5;
+
+    this.orientBullet = function(bullet) {
+
+        var y = BABYLON.Vector3.Normalize(bullet.position);
+        var x = bullet.__right.clone();
+        var z = y.cross(x); z.normalize();
+
+        var m = new BABYLON.Matrix();
+            m.setRow(0,new BABYLON.Vector4(x._x,x._y,x._z,0))
+            m.setRow(1,new BABYLON.Vector4(y._x,y._y,y._z,0))
+            m.setRow(2,new BABYLON.Vector4(z._x,z._y,z._z,0))
+        var q = new BABYLON.Quaternion();
+        m.decompose(null,q,null,null);
+        return q
+    }
+
+    this.instanceBullet = function(where) {
+        var newInstance = this.mesh.createInstance("bulletInstance");
+        this.sound.play();
+        var m = this.planet.computeWorldMatrix(true)
+        var where_planet = BABYLON.Vector3.TransformCoordinates(where,BABYLON.Matrix.Invert(m));
+        
+        newInstance.position = where_planet;
+        this.height = where_planet.length();
+        newInstance.parent = this.planet
+        newInstance.checkCollisions = true;
+        newInstance.lifetime = this.BULLET_LIFETIME;
+
+        var world_to_planet = BABYLON.Matrix.Invert(this.planet.computeWorldMatrix(true));
+        
+        // the right direction remains always the same so I can use it to build around the new frame each time
+        newInstance.__right = BABYLON.Vector3.Normalize(BABYLON.Vector3.TransformCoordinates(this.player.mesh.right,world_to_planet));
+        newInstance.rotationQuaternion = this.orientBullet(newInstance);
+
+        this.bullets.push(newInstance);
+    }
+        
+
+    this.scene.onBeforeRenderObservable.add(() => {
+        
+        var world_to_planet = BABYLON.Matrix.Invert(this.planet.computeWorldMatrix(true));
+        
+        this.bullets.forEach((bullet,idx) =>{   
+            bullet.rotationQuaternion = this.orientBullet(bullet,world_to_planet);
+
+            bullet.lifetime -= 1;
 
 
-        loadAnimations(player);
+            bullet.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
+            bullet.position = bullet.position.normalize().scale(this.height);
+
+
+
+            if (bullet.lifetime <= 0) {
+                bullet.dispose();
+                this.bullets.splice(idx,1);
+            }
+        });
     });
-    return player;
 
 }
 
-function loadAnimations(player) {
-    var frame_rate = 100;
+function PlayerInput(scene) {
 
-    // 1) Define an animation group
-    var p_rest_anim = new BABYLON.AnimationGroup("p_rest_anim"); 
+    this.scene = scene;
+    this.inputMap = {}; // put here key presses
 
-    // 2) Define an animation for each joint
-    var p_rest_left_arm = new BABYLON.Animation("p_rest_left_arm","rotation",frame_rate,
-                                                   BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-    //    And set the keys
-    p_rest_left_arm.setKeys([
-        { frame: 0, value: new BABYLON.Vector3(-0.17,1.57,-1)},
-        { frame: 50, value: new BABYLON.Vector3(0.11,1.57,-1)},
-        { frame: 100, value: new BABYLON.Vector3(-0.17,1.57,-1)},
+    // Install an action manager on the scene
+    this.scene.actionManager = new BABYLON.ActionManager(this.scene);
+    // Listen to keypress and keyrelease events
+    this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, (evt) => {
+        this.inputMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
+    }));
+    this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, (evt) => {
+        this.inputMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown"; // why keydown?
+    }));
 
-    ]);
-    // 3) Link the animation to the joint
-    p_rest_anim.addTargetedAnimation(p_rest_left_arm,scene.getNodeById("p_LeftArm"));
+    this.straight = 0;
+    this.strafe = 0;
 
+    this.prev_spacebar = false;
+    this.shoot = false;
 
-    p_rest_anim.speedRatio = 0.25;
-    p_rest_anim.play(true);
+    this.updateFromKeyboard = function() {
+        if (this.inputMap["w"]) {
+            this.straight = BABYLON.Scalar.Lerp(this.straight, 1, 0.4);
+        } else if (this.inputMap["s"]) {
+            this.straight = BABYLON.Scalar.Lerp(this.straight, -1, 0.4);
+        } else {
+            this.straight = BABYLON.Scalar.Lerp(this.straight, 0, 0.4);
+        }
+        if (this.inputMap["a"]) {
+            this.strafe = BABYLON.Scalar.Lerp(this.strafe, -1, 0.4);
+        } else if (this.inputMap["d"]) {
+            this.strafe = BABYLON.Scalar.Lerp(this.strafe, +1, 0.4);
+        }
+        else {
+            this.strafe = BABYLON.Scalar.Lerp(this.strafe, 0, 0.4);
+        }
+        if (this.inputMap[" "]) {// spacebar
+            if (!this.prev_spacebar)  this.shoot = true;
+            else this.shoot = false;
+            this.prev_spacebar = true;
+        }
+        else this.prev_spacebar = false;
+    }
 
-
-    // return a dictionary with all the animation groups
-    return {"rest": p_rest_anim};
-}
-
-
-function rename_with_prefix(x,prefix) {
-    x.id = prefix + x.id; // add a prefix
-    let children = x.getChildren()
-    if (children == []) {return;} // no children left here
-    // else
-    children.forEach(child => rename_with_prefix(child,prefix));
-
-    return;
 }
