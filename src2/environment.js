@@ -367,7 +367,6 @@ function Environment(scene) {
         var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
 
         var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
-        buttonQuit.alpha = 0.7;
         buttonQuit.thickness = 4;
         buttonQuit.width = 0.1;
         buttonQuit.height = 0.1;
@@ -378,8 +377,47 @@ function Environment(scene) {
         buttonQuit.background = "red";
         buttonQuit.horizontalAlignment = 1;
         buttonQuit.verticalAlignment = 0;
+        buttonQuit.alpha = 0.8;
         advancedTexture2.addControl(buttonQuit); 
         buttonQuit.onPointerClickObservable.add(function () {SecondaryMenu(advancedTexture2,game);});
+
+        var rect = new BABYLON.GUI.Rectangle();
+        rect.width = "180px";
+        rect.height = "60px";
+        rect.cornerRadius = 20;
+        rect.color = "red";
+        rect.thickness = 3;
+        rect.background = "white";
+        rect.alpha = 0.8;
+        rect.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        rect.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP; 
+        advancedTexture2.addControl(rect);
+
+        var grid = new BABYLON.GUI.Grid();   
+        grid.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTRE;
+        grid.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTRE; 
+        grid.width = 1;
+        grid.height = 1;
+        grid.addColumnDefinition(0.5);
+        grid.addColumnDefinition(0.5);
+        grid.addColumnDefinition(0.5);
+        rect.addControl(grid);
+
+        var life1 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
+        life1.width = 1;
+        life1.height = 1;
+        grid.addControl(life1,0,0);
+
+        var life2 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
+        life2.width = 1;
+        life2.height = 1;
+        grid.addControl(life2,0,1);
+
+        var life3 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
+        life3.width = 1;
+        life3.height = 1;
+        grid.addControl(life3,0,2);
+
     }
 }
 
