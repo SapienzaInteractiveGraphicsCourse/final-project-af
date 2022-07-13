@@ -155,8 +155,7 @@ function Bullet(player) {
         
         var world_to_planet = BABYLON.Matrix.Invert(this.planet.computeWorldMatrix(true));
         
-        for (var i=0; i<this.bullets.length; i+=1) {
-            var bullet = this.bullets[i]
+        this.bullets.forEach((bullet,idx) =>{   
             bullet.rotationQuaternion = this.orientBullet(bullet,world_to_planet);
 
             bullet.lifetime -= 1;
@@ -169,9 +168,9 @@ function Bullet(player) {
 
             if (bullet.lifetime <= 0) {
                 bullet.dispose();
-                this.bullets.splice(i,1);
+                this.bullets.splice(idx,1);
             }
-        }
+        });
     });
 
 }

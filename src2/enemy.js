@@ -66,7 +66,7 @@ function Enemy(scene,environment,player) {
     this.scene.onBeforeRenderObservable.add(() => {
         var m = this.environment.planet.computeWorldMatrix(true)
         var player_position_planet = BABYLON.Vector3.TransformCoordinates(this.player_position,BABYLON.Matrix.Invert(m));
-        this.enemies.forEach(enemy => {
+        this.enemies.forEach((enemy,index) => {
             // face the player
 
             var m = OrientEnemy(enemy.position,player_position_planet);
@@ -86,9 +86,12 @@ function Enemy(scene,environment,player) {
             // bullet collision
             var bullets = this.scene.getMeshesById("bulletInstance")
             bullets.forEach(b =>{ 
-            if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
-                console.log("collision with bulletInstance!!")
-            }});
+                if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
+                    console.log("bullet HIT")
+                    enemy.dispose();
+                    this.enemies.splice(index,1);
+                }
+            });
 
         });
     });

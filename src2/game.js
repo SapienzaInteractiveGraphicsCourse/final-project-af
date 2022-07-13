@@ -90,17 +90,6 @@ function Game() {
                 gun.position = new BABYLON.Vector3(-0.06,0.29,0);
                 gun.parent = this.scene.getNodeById("p_RightHand");
             })
-        await BABYLON.SceneLoader.ImportMeshAsync(null, "./res/models/skateboard-babylon/", "skateboard.babylon", scene).then(
-            result =>{
-                var skateboard = new BABYLON.TransformNode("skateboard",scene);
-                result.meshes.forEach(mesh => mesh.parent=skateboard);
-                skateboard.scaling = new BABYLON.Vector3(0.3,0.3,0.3);
-                skateboard.position = new BABYLON.Vector3(0.13,0.06,0.07);
-                skateboard.rotation = new BABYLON.Vector3(-0.96,3.01,-3.03);
-                this.scene.getMeshById("Merged_Meshes").position = new BABYLON.Vector3(-0.08,-0.21,3.36);
-                skateboard.rotationQuaternion = null;
-                skateboard.parent = this.scene.getNodeById("p_RightFoot");
-            })
     }
 
     this.goToMainMenu = async function() {
