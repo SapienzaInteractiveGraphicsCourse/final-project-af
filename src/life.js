@@ -1,6 +1,7 @@
 function playerLife (game) {
 
     this.numberLife = 3;
+    this.start = new Date().getTime();
     this.time = 0;
     this.kills = 0;
     this.game = game;
@@ -11,11 +12,15 @@ function playerLife (game) {
         this.numberLife -=1;
         if(this.numberLife <= 2) this.game.environment.life3.isVisible = false; 
         if(this.numberLife <= 1) this.game.environment.life2.isVisible = false;
-        if(this.numberLife == 0) 
-        this.game.environment.life1.isVisible = false;
+        if(this.numberLife == 0) this.game.environment.life1.isVisible = false;
     }
     this.game.scene.onAfterRenderObservable.add(() => {
-      if (this.numberLife == 0) this.game.goToLost();});
+      if (this.numberLife == 0){
+        var end = new Date().getTime();
+        this.time = (end - this.start)/1000;
+        this.game.goToLost();
+        
+      }}); 
 }
 
 
@@ -78,7 +83,7 @@ function playerLife (game) {
     text2.height = 0.7;
     text2.text = "SCORE: \n";
     text2.text += "   - Number of kills: " + game.player.life.kills + "\n";
-    text2.text += "   - Time: "+ game.player.life.time + "\n";
+    text2.text += "   - Time: "+ convertHMS(game.player.life.time) + "\n";
     text2.color = "white";
     text2.fontSize = 34;
     text2.textWrapping = 1;
@@ -152,6 +157,17 @@ function playerLife (game) {
   }
 
 
+function convertHMS(value) {
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours   = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
+}
     
 
 

@@ -149,16 +149,19 @@ function Environment(scene) {
         this.redPlanet.material = redMat;
         this.redPlanet.position  = new BABYLON.Vector3(100,10,100);
         this.redPlanet.rotation.y = -Math.PI/2;
+        this.redPlanet.parent = this.planet;
 
         this.greenPlanet = BABYLON.MeshBuilder.CreateSphere("green", {diameter:60}, scene);
         this.greenPlanet.material = greenMat;
         this.greenPlanet.position = new BABYLON.Vector3(-150,-80,100);
         this.greenPlanet.rotation.y = Math.PI;
+        this.greenPlanet.parent = this.planet;
 
         this.brownPlanet = BABYLON.MeshBuilder.CreateSphere("brown", {diameter:60}, scene);
         this.brownPlanet.material = terraMat;
         this.brownPlanet.position = new BABYLON.Vector3(-100,-30,-100);
-        this.brownPlanet.rotation.y = Math.PI/2
+        this.brownPlanet.rotation.y = Math.PI/2;
+        this.brownPlanet.parent = this.planet;
 
         this.ring = BABYLON.MeshBuilder.CreateTorus("torus", {thickness: 10, diameter: 100, tessellation:32});
         this.ring.material = sandMat;
