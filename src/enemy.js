@@ -29,6 +29,7 @@ function Enemy(scene,environment,player) {
 
                     this.floatingAnimation.setEasingFunction(easing);
                     this.enemyAssets.animations.push(this.floatingAnimation)
+                    this.environment.houseAssets.hittable = true;
                 });
     }
     this.instanceEnemy = function(where) {
@@ -59,25 +60,28 @@ function Enemy(scene,environment,player) {
         base.rotationQuaternion = new BABYLON.Quaternion();
 
         base.target = Math.random() > 1 ? "player" : "house";
-        console.log(base.target);
+        base.setToRemove = false;
         this.enemies.push(base);
     }
 
     this.sound_pain = new BABYLON.Sound("enemy_pain", "./res/sounds/enemy_pain.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
+        // remove disposed enemies
+        this.enemies = this.enemies.filter(enemy => {
+                if (enemy.setToRemove) enemy.dispose();
+                return !enemy.setToRemove;
+        });
+
+
         var m = this.environment.planet.computeWorldMatrix(true)
         var player_position_planet = BABYLON.Vector3.TransformCoordinates(this.player_position,BABYLON.Matrix.Invert(m));
         this.enemies.forEach((enemy,index) => {
-            // face the player
-
-
-            //enemy.rotation = rotation.toEulerAngles();
-
-            // and take a step
+            // face the player            
             
             // DOES NOT WORK IN THE UNDERWORLD;
             //enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH); 
+
             if (enemy.target == "player") {
                 var m = OrientEnemy(enemy.position,player_position_planet);
             
@@ -88,9 +92,23 @@ function Enemy(scene,environment,player) {
                 var m = OrientEnemy(enemy.position,this.environment.houseAssets.position);
                 m.decompose(null,enemy.rotationQuaternion,null,null);
 
-                if (enemy.position.subtract(this.environment.houseAssets.position).length() > 0.5)
+                if (enemy.position.subtract(this.environment.houseAssets.position).length() > 2)
                     enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
-                else this.player.life.lostLife();
+                else {
+                    // house infested
+                    console.log("infested house");
+                    // maybe play sound
+
+                    // dispose the enemy that hit the house
+                    enemy.setToRemove = true;
+
+                    if (this.environment.houseAssets.hittable) {
+                        this.player.life.lostLife();
+                        this.environment.houseAssets.hittable = false;
+                        setTimeout(function() {g.environment.houseAssets.hittable = true},2000);
+                    }
+                
+                } 
             }
             //enemy.position = enemy.position.normalize().scale(this.environment.planet.radius);
 
@@ -101,8 +119,7 @@ function Enemy(scene,environment,player) {
                     console.log("bullet HIT");
                     this.sound_pain.play();
                     this.player.life.kills += 1; // increment kill counter
-                    enemy.dispose();
-                    this.enemies.splice(index,1);
+                    enemy.setToRemove = true;
                 }
             });
 
