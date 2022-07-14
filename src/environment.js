@@ -65,8 +65,8 @@ function Environment(scene) {
         this.instanceSkull(3);
 
         await this.loadHouseAssets(this.scene);
-        this.houseAssets.position = new BABYLON.Vector3( R-1.2, 0, 5.5);
-        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2);
+        this.houseAssets.position = new BABYLON.Vector3( R-1.9, 0, 7.5);
+        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/11.5, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
         this.houseAssets.id = "collidable";
         

@@ -5,7 +5,8 @@ function wellcome_text(){
 
 
 function rules_text(){
-    text = "Do not let the enemies touch your house or kill you. \n";
+    text = "Do not let the enemies touch your house or kill you.";
+    text += " Everytime you are damaged from the gosts, you will loose a life (out of three) \n";
     text += " \n";
     text += "The enemies will spawn form a red ruby at the opposite pole of the planet.";
     text +=  "Their goal can either be kill you or get to the house.\n";
