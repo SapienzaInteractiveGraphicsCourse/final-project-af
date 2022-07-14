@@ -6,7 +6,7 @@ function Environment(scene) {
 
     this.treeAssets = null;
     this.houseAssets = null;
-
+    
 
     this.load = async function(game) { // Here you load the world assets
         var skybox = createSkyBox(scene);
@@ -83,9 +83,9 @@ function Environment(scene) {
         this.tractorAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadStoneAssets(this.scene);
-        this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
+        this.stoneAssets.position = new BABYLON.Vector3( R-2.4, 10, 5.5);
         this.stoneAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 + Math.PI/9);
-        this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
+        this.stoneAssets.scaling = new BABYLON.Vector3(0.008,0.008,0.008);
         this.stoneAssets.parent = this.upperworld;
         this.stoneAssets.checkCollisions = true;
         this.stoneAssets.getChildren().forEach(c=>c.id = "collidable");
@@ -204,11 +204,6 @@ function Environment(scene) {
         this.smoke.parent = this.underworld;
         this.smoke.isLocal = true;
         this.smoke.start();
-
-
-
-        
-
         //this.playerStatus = new playerLife(3,10,true);
         //console.log(playerLife);
         
@@ -311,11 +306,11 @@ function Environment(scene) {
     
 
     this.sounds = function(scene){
-        //var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
-        //    loop: true,
-        //    autoplay: true,
-        //    volume:1
-        //});
+        var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
+            loop: true,
+            autoplay: true,
+            volume:1
+        });
 
         var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", scene);
         var walking_sound = new BABYLON.Sound("gunshot", "./res/sounds/walking.wav", scene);
@@ -343,20 +338,20 @@ function Environment(scene) {
         var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
 
         game.environment.sounds(scene);
-        //var buttonLost = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Lost");
+        //var buttonLost = BABYLON.GUI.Button.CreateSimpleButton("New_button", "New ghost");
         //buttonLost.thickness = 4;
-        //buttonLost.width = 0.1;
+        //buttonLost.width = 0.2;
         //buttonLost.height = 0.1;
         //buttonLost.cornerRadius = 540;
         //buttonLost.children[0].color = "white";
         //buttonLost.children[0].fontSize = 30;
         //buttonLost.color = "#303233";
         //buttonLost.background = "red";
-        //buttonLost.horizontalAlignment = 2;
-        //buttonLost.verticalAlignment = 2;
+        //buttonLost.horizontalAlignment = 1;
+        //buttonLost.verticalAlignment = 1;
         //buttonLost.alpha = 0.8;
         //advancedTexture2.addControl(buttonLost); 
-        //buttonLost.onPointerClickObservable.add(function () {game.goToLost()});
+        //buttonLost.onPointerClickObservable.add(function () {game.enemy.callEnemies()});
 
         var buttonQuit = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Menu");
         buttonQuit.thickness = 4;
@@ -410,6 +405,9 @@ function Environment(scene) {
         grid.addControl(life3,0,2); this.life3 = life3;
 
     }
+
+
+    
 }
 
 
@@ -447,3 +445,4 @@ function getRandomLoc2(R){
     var z = (R+1)*Math.cos(phi)                ;
     return new BABYLON.Vector3(x,y,z);
 }
+

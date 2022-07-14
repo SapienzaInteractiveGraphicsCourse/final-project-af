@@ -43,11 +43,12 @@ function Enemy(scene,environment,player) {
         //newInstance.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
 
         // "where" has to be on the sphere
-        var R = this.environment.planet.radius;
-        if (Math.abs(where.length()-R) > 0.01) {
-            
-            where = where.normalize().scale(R);
-        }
+        //var R = this.environment.planet.radius;
+        //if (Math.abs(where.length()-R) > 0.01) {
+        //    
+        //    where = where.normalize().scale(R);
+        //  
+        //}
 
         //base.position = where;
         base.parent = this.environment.planet;
@@ -62,11 +63,11 @@ function Enemy(scene,environment,player) {
         base.target = Math.random() > 1 ? "player" : "house";
         base.setToRemove = false;
         this.enemies.push(base);
-        this.sound_born.play();
+        
     }
 
     this.sound_pain = new BABYLON.Sound("enemy_pain", "./res/sounds/enemy_pain.wav", scene);
-    this.sound_wind = new BABYLON.Sound("infested", "./res/sounds/wind.wav", scene);
+    this.sound_wind = new BABYLON.Sound("infested", "./res/sounds/infested.wav", scene);
     this.sound_born = new BABYLON.Sound("enemy_born", "./res/sounds/new_ghost.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
@@ -129,6 +130,28 @@ function Enemy(scene,environment,player) {
 
         });
     });
+
+    
+
+    this.hordeN = 1;
+    this.callEnemies = function(){
+        var time = newTime(this.player.life.start);
+        var R = this.environment.planet.radius;
+        
+        BABYLON.setAndStartTimer({
+        timeout: time,
+        contextObservable: scene.onBeforeRenderObservable,
+        onEnded: () => {
+            for(var instance = 0; instance < this.hordeN; instance++){
+                var where = getRandomLoc3(R);
+                this.instanceEnemy(where);
+            }
+            this.sound_born.play();
+            this.callEnemies();
+        },});
+        
+    }
+
 }
 
 
@@ -146,4 +169,22 @@ function OrientEnemy(position, player_position) {
 
     return m;
 }
+
+function getRandomLoc3(R){
+    var h = R*0.9;
+    var r = Math.sqrt(Math.pow(R,2) - Math.pow(h,2));
+    var x = Math.cos(Math.random()*Math.PI)*r;
+    var sign = Math.random();
+    if(sign > 0.5){sign = -1} else {sign = 1}
+    var z = sign * Math.sqrt(Math.pow(r,2) - Math.pow(x,2));
+    return new BABYLON.Vector3(x,-h, z);
+}
+
+function newTime(start){
+    
+    var time = (start - new Date().getTime())/1000;
+    return Math.exp(time/1000)*5000;
+
+}
+
 

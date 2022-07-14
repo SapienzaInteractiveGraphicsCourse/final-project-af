@@ -265,13 +265,13 @@ function Menu(game) {
     var setDiff = function(but) {   
         switch(but) {
             case 0: 
-                flag_diff = 1;
+                //game.difficulty = 1;
             break
             case 1: 
-                flag_diff = 2;
+                //game.difficulty =  2;
             break
             case 2: 
-                flag_diff = 3;
+                //game.difficulty =  3;
             break
         }
     }
@@ -291,7 +291,7 @@ function Menu(game) {
     diffGroup.addRadio("High", setDiff);
 
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
-	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 5, 1)
 }
 
 

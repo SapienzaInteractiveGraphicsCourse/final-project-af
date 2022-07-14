@@ -30,6 +30,7 @@ function Game() {
 
         this.enemy = new Enemy(this.scene,this.environment,this.player);
         await this.enemy.loadEnemy();
+        this.enemy.callEnemies();
 
         // from https://www.babylonjs-playground.com/#PLW9V9#19
         // camera pointer lock code 

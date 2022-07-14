@@ -231,7 +231,7 @@ function SecondaryMenu(advancedTexture2,game) {
 
 
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
-	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 10, 5)
+	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 5, 1)
 }
 
 
