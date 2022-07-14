@@ -199,7 +199,7 @@ function Environment(scene) {
         this.smoke.isLocal = true;
         this.smoke.start();
 
-        this.sounds(this.scene);
+
 
         
 
@@ -335,7 +335,7 @@ function Environment(scene) {
     this.GUI_environment = function(game,scene){
         var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("game UI");
 
-
+        game.environment.sounds(scene);
         //var buttonLost = BABYLON.GUI.Button.CreateSimpleButton("Quit_button", "Lost");
         //buttonLost.thickness = 4;
         //buttonLost.width = 0.1;
