@@ -68,10 +68,11 @@ function Environment(scene) {
         this.houseAssets.position = new BABYLON.Vector3( R-1.9, 0, 7.5);
         this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/11.5, -Math.PI/2);
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
-        this.houseAssets.id = "collidable";
+        this.houseAssets.getChildren().forEach(c=>c.id = "collidable");
         
         this.houseAssets.parent = this.upperworld;
         this.houseAssets.checkCollisions = true;
+
 
         await this.loadTractorAssets(this.scene);
         this.tractorAssets.position = new BABYLON.Vector3( R-2.4, -10, 5.5);
@@ -79,7 +80,7 @@ function Environment(scene) {
         this.tractorAssets.scaling = new BABYLON.Vector3(0.7,0.7,0.7);
         this.tractorAssets.parent = this.upperworld;
         this.tractorAssets.checkCollisions = true;
-        this.tractorAssets.id = "collidable";
+        this.tractorAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadStoneAssets(this.scene);
         this.stoneAssets.position = new BABYLON.Vector3( R-2.5, 10, 5.5);
@@ -87,7 +88,7 @@ function Environment(scene) {
         this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
         this.stoneAssets.parent = this.upperworld;
         this.stoneAssets.checkCollisions = true;
-        this.stoneAssets.id = "collidable;"
+        this.stoneAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadPCrystalAssets(this.scene);
         this.pcrystalAssets.position = new BABYLON.Vector3( 0, R+3.5,0);
@@ -95,7 +96,7 @@ function Environment(scene) {
         this.pcrystalAssets.scaling = new BABYLON.Vector3(0.1,0.1,0.1);
         this.pcrystalAssets.parent = this.upperworld;
         this.pcrystalAssets.checkCollisions = true;
-        this.pcrystalAssets.id = "collidable";
+        this.pcrystalAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadSmallCrystalAssets(this.scene);
         this.smallcrystalAssets.position = new BABYLON.Vector3( 5.7, -R-1,-4);
@@ -103,7 +104,7 @@ function Environment(scene) {
         this.smallcrystalAssets.scaling = new BABYLON.Vector3(30,30,30);
         this.smallcrystalAssets.parent = this.upperworld;
         this.smallcrystalAssets.checkCollisions = true;
-        this.smallcrystalAssets.id = "collidable";
+        this.smallcrystalAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadRubyAssets(this.scene);
         this.rubyAssets.position = new BABYLON.Vector3( 0, R-1.2 ,0);
@@ -111,7 +112,8 @@ function Environment(scene) {
         this.rubyAssets.scaling = new BABYLON.Vector3(4,4,4);
         this.rubyAssets.parent = this.underworld;
         this.rubyAssets.checkCollisions = true;
-        this.rubyAssets.id = "collidable";
+        this.rubyAssets.getChildren().forEach(c=>c.id = "collidable");
+
 
         await this.loadGraveCrystalAssets(this.scene);
         this.gravecrystalAssets.position = new BABYLON.Vector3( -10, R-1.2 ,8);
@@ -119,7 +121,8 @@ function Environment(scene) {
         this.gravecrystalAssets.scaling = new BABYLON.Vector3(17,17,17);
         this.gravecrystalAssets.parent = this.underworld;
         this.gravecrystalAssets.checkCollisions = true;
-        this.gravecrystalAssets.id = "collidable";
+        this.gravecrystalAssets.getChildren().forEach(c=>c.id = "collidable");
+
 
         await this.loadGraveAssets(this.scene);
         this.graveAssets.position = new BABYLON.Vector3( -15, R-2 ,0);
