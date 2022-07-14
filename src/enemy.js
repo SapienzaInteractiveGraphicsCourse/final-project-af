@@ -62,9 +62,12 @@ function Enemy(scene,environment,player) {
         base.target = Math.random() > 1 ? "player" : "house";
         base.setToRemove = false;
         this.enemies.push(base);
+        this.sound_born.play();
     }
 
     this.sound_pain = new BABYLON.Sound("enemy_pain", "./res/sounds/enemy_pain.wav", scene);
+    this.sound_wind = new BABYLON.Sound("infested", "./res/sounds/wind.wav", scene);
+    this.sound_born = new BABYLON.Sound("enemy_born", "./res/sounds/new_ghost.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
         // remove disposed enemies
@@ -88,6 +91,7 @@ function Enemy(scene,environment,player) {
                 m.decompose(null,enemy.rotationQuaternion,null,null);
                 if (enemy.position.subtract(player_position_planet).length() > 0.5)
                     enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
+                    
             } else if (enemy.target == "house") {
                 var m = OrientEnemy(enemy.position,this.environment.houseAssets.position);
                 m.decompose(null,enemy.rotationQuaternion,null,null);
@@ -97,8 +101,8 @@ function Enemy(scene,environment,player) {
                 else {
                     // house infested
                     console.log("infested house");
-                    // maybe play sound
-
+                    // play sound
+                   this.sound_wind.play();
                     // dispose the enemy that hit the house
                     enemy.setToRemove = true;
 

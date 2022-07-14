@@ -311,11 +311,11 @@ function Environment(scene) {
     
 
     this.sounds = function(scene){
-        var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
-            loop: true,
-            autoplay: true,
-            volume:1
-        });
+        //var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
+        //    loop: true,
+        //    autoplay: true,
+        //    volume:1
+        //});
 
         var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", scene);
         var walking_sound = new BABYLON.Sound("gunshot", "./res/sounds/walking.wav", scene);
