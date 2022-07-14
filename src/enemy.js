@@ -6,7 +6,7 @@ function Enemy(scene,environment,player) {
 
     this.environment = environment;
 
-    this.STEP_LENGTH = 0.1;
+    this.STEP_LENGTH = 0.07;
 
     this.enemies = [];
 
@@ -58,6 +58,8 @@ function Enemy(scene,environment,player) {
         base.position = where;
         base.rotationQuaternion = new BABYLON.Quaternion();
 
+        base.target = Math.random() > 1 ? "player" : "house";
+        console.log(base.target);
         this.enemies.push(base);
     }
 
@@ -69,24 +71,33 @@ function Enemy(scene,environment,player) {
         this.enemies.forEach((enemy,index) => {
             // face the player
 
-            var m = OrientEnemy(enemy.position,player_position_planet);
-            
-            m.decompose(null,enemy.rotationQuaternion,null,null);
+
             //enemy.rotation = rotation.toEulerAngles();
 
             // and take a step
             
             // DOES NOT WORK IN THE UNDERWORLD;
             //enemy.rotateAround(BABYLON.Vector3.Zero(), enemy.right,STEP_LENGTH); 
+            if (enemy.target == "player") {
+                var m = OrientEnemy(enemy.position,player_position_planet);
+            
+                m.decompose(null,enemy.rotationQuaternion,null,null);
+                if (enemy.position.subtract(player_position_planet).length() > 0.5)
+                    enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
+            } else if (enemy.target == "house") {
+                var m = OrientEnemy(enemy.position,this.environment.houseAssets.position);
+                m.decompose(null,enemy.rotationQuaternion,null,null);
 
-            if (enemy.position.subtract(player_position_planet).length() > 0.5)
-            enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
-            enemy.position = enemy.position.normalize().scale(this.environment.planet.radius);
+                if (enemy.position.subtract(this.environment.houseAssets.position).length() > 0.5)
+                    enemy.locallyTranslate(new BABYLON.Vector3(0,0,this.STEP_LENGTH));
+                else this.player.life.lostLife();
+            }
+            //enemy.position = enemy.position.normalize().scale(this.environment.planet.radius);
 
             // bullet collision
             var bullets = this.scene.getMeshesById("bulletInstance")
             bullets.forEach(b =>{ 
-                if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
+                if (enemy.getChildren()[0] != undefined && b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
                     console.log("bullet HIT")
                     this.player.life.kills += 1; // increment kill counter
                     enemy.dispose();
