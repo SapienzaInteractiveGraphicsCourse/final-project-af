@@ -11,7 +11,8 @@ function playerLife (game) {
         this.numberLife -=1;
         if(this.numberLife <= 2) this.game.environment.life3.isVisible = false; 
         if(this.numberLife <= 1) this.game.environment.life2.isVisible = false;
-        if(this.numberLife == 0) this.game.environment.life1.isVisible = false;
+        if(this.numberLife == 0) 
+        this.game.environment.life1.isVisible = false;
     }
     this.game.scene.onAfterRenderObservable.add(() => {
       if (this.numberLife == 0) this.game.goToLost();});
@@ -149,7 +150,6 @@ function playerLife (game) {
       game.goToMainMenu();
     });
   }
-
 
 
     
