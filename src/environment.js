@@ -62,15 +62,15 @@ function Environment(scene) {
         await this.loadTreeAssets(this.scene);
         await this.loadSkullAssets(this.scene);
         this.instanceTrees(20);
-        this.instanceSkull(3);
+        this.instanceSkull(R);
 
         await this.loadHouseAssets(this.scene);
-        this.houseAssets.position = new BABYLON.Vector3( R-1.9, 0, 7.5);
-        this.houseAssets.rotation = new BABYLON.Vector3(0,-Math.PI/11.5, -Math.PI/2);
+        this.houseAssets.position = new BABYLON.Vector3(-7.5 , R-1.9, 0);
+        this.houseAssets.rotation = new BABYLON.Vector3(Math.PI/11.5,-Math.PI/2,0); //-Math.PI/11.5
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
         this.houseAssets.getChildren().forEach(c=>c.id = "collidable");
         
-        this.houseAssets.parent = this.upperworld;
+        this.houseAssets.parent = this.planet;
         this.houseAssets.checkCollisions = true;
 
 
@@ -117,7 +117,7 @@ function Environment(scene) {
 
         await this.loadGraveCrystalAssets(this.scene);
         this.gravecrystalAssets.position = new BABYLON.Vector3( -10, R-1.2 ,8);
-        this.gravecrystalAssets.rotation = new BABYLON.Vector3(0,0,0);
+        this.gravecrystalAssets.rotation = new BABYLON.Vector3(0, 0, 0);
         this.gravecrystalAssets.scaling = new BABYLON.Vector3(17,17,17);
         this.gravecrystalAssets.parent = this.underworld;
         this.gravecrystalAssets.checkCollisions = true;
@@ -289,15 +289,16 @@ function Environment(scene) {
         }
     }
 
-    this.instanceSkull = function(n) {
-        for (var index = 0; index < n; index++) {
+    this.instanceSkull = function(R) {
+        var position = [new BABYLON.Vector3( R-3.0,R/2 ,0),
+        new BABYLON.Vector3( -R+3.0,R/2 ,0)];
+        for (var index = 0; index < 2; index++) {
             var newInstance = this.skullAssets.createInstance("i" + index);
             newInstance.parent = this.underworld;
-            newInstance.scaling = new BABYLON.Vector3(3,3,3);
-            var randomPosition = getRandomLoc2(this.planet.radius);
-            var rotation = getRotation(randomPosition);
+            newInstance.scaling = new BABYLON.Vector3(2,2,2);
+            var rotation = getRotation(position[index]);
             newInstance.checkCollisions = true;
-            newInstance.position = randomPosition;
+            newInstance.position = position[index];
             newInstance.id = "collidable";
             rotation.decompose(null,newInstance.rotationQuaternion,null,null);
 
@@ -376,7 +377,6 @@ function Environment(scene) {
         rect.color = "red";
         rect.thickness = 3;
         rect.background = "white";
-        rect.alpha = 0.8;
         rect.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
         rect.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP; 
         advancedTexture2.addControl(rect);
@@ -390,8 +390,6 @@ function Environment(scene) {
         grid.addColumnDefinition(0.5);
         grid.addColumnDefinition(0.5);
         rect.addControl(grid);
-
-        var life_flag = 3;
 
         var life1 = new BABYLON.GUI.Image("but", "res/textures/life.jpg");
         life1.width = 1;
