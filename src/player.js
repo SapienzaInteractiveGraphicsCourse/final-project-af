@@ -43,9 +43,14 @@ function Player(assets,scene,input,planet,game) {
     this.hittable = true;
     this.UNHITTABLE_TIME = 1500; // ms
     this.canShoot = true;
-    this.RELOAD_TIME = 1000; // ms
+    this.RELOAD_TIME = 500; // ms
 
     this.bullet = new Bullet(this);
+
+    this.sound_pain = new BABYLON.Sound("pain", "./res/sounds/player_pain.wav", scene);
+    
+    this.sound_death = new BABYLON.Sound("death", "./res/sounds/critical_hit.wav", scene);
+
 
     this.scene.onBeforeRenderObservable.add(() => {
 
@@ -92,7 +97,18 @@ function Player(assets,scene,input,planet,game) {
             if (this.cm.intersectsMesh(e,true)) {
                 // collision with enemy
                 if (this.hittable) {
+                    
+
+                    if(this.life.numberLife == 1){
+                        this.sound_death.play();
+                        
+                    }
+                    else {
+                        this.sound_pain.play();
+                       
+                    }
                     this.life.lostLife();
+                    
                     this.hittable = false;
         
                     setTimeout(function() {g.player.hittable = true},this.UNHITTABLE_TIME);

@@ -61,7 +61,7 @@ function Enemy(scene,environment,player) {
         this.enemies.push(base);
     }
 
-        
+    this.sound_pain = new BABYLON.Sound("enemy_pain", "./res/sounds/enemy_pain.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
         var m = this.environment.planet.computeWorldMatrix(true)
@@ -87,7 +87,8 @@ function Enemy(scene,environment,player) {
             var bullets = this.scene.getMeshesById("bulletInstance")
             bullets.forEach(b =>{ 
                 if (b != null && enemy.getChildren()[0].intersectsMesh(b,false)) {
-                    console.log("bullet HIT")
+                    console.log("bullet HIT");
+                    this.sound_pain.play();
                     this.player.life.kills += 1; // increment kill counter
                     enemy.dispose();
                     this.enemies.splice(index,1);
