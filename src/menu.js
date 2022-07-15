@@ -194,7 +194,7 @@ function Menu(game) {
         grid.addControl(image_steampunk,0,1);
 
         var sv = new BABYLON.GUI.ScrollViewer(null, true);
-        sv.width = 0.6;
+        sv.width = 0.65;
         sv.height = 0.7;
         sv.thickness = 0;
         sv.color = "black";
@@ -206,13 +206,13 @@ function Menu(game) {
         var rc = new BABYLON.GUI.Rectangle();
         rc.thickness = 0;
         rc.width = 1;
-        rc.height = 1;
+        rc.height = 2;
         sv.addControl(rc);
     
         var text1 = new BABYLON.GUI.TextBlock();
         text1.text = commands_text();
         text1.color = "white";
-        text1.fontSize = 18;
+        text1.fontSize = 16;
         text1.textWrapping = 1;
         text1.textHorizontalAlignment = 0;
         text1.textVerticalAlignment = 0;
