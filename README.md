@@ -2,7 +2,7 @@
 
 Final project for the course of Interactive Graphics 2021/2022.
 
-> Adriano Pacciarelli (:red_circle: matricola adrià)
+> Adriano Pacciarelli 1816493
 
 > Fabio Scaparro 1834913
 
