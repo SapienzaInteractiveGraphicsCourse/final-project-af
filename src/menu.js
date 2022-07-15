@@ -251,13 +251,13 @@ function Menu(game) {
     var setLight = function(but) {   
         switch(but) {
             case 0: 
-                flag_light = 0.1;
+                game.flag_light = 0.1;
             break
             case 1: 
-                flag_light = 0.5;
+                game.flag_light = 0.5;
             break
             case 2: 
-                flag_light = 1.0;
+                game.flag_light = 1.0;
             break
         }
     }
