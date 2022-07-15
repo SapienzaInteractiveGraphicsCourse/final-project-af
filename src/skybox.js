@@ -8,12 +8,13 @@ function createSkyBox(scene,game) {
     var sunlight_direct = new BABYLON.DirectionalLight("sunlight_direct",new BABYLON.Vector3(0, -1, 0), scene);
     sunlight_direct.parent = skybox;
     sunlight_direct.intensity = 2.0;
+    skybox.sunlight_direct = sunlight_direct;
     
     var sunlight = new BABYLON.HemisphericLight("sunlight",new BABYLON.Vector3(0, 1, 0), scene);
     var max_intensity = 1;//this.intensity;
 
     sunlight.intensity = max_intensity;
-
+    skybox.sunlight = sunlight;
     // smoothly changes time to time_to
     skybox.setTime = function(time_to,speed=1,cycle=false) {
         // change position of sun (visual)

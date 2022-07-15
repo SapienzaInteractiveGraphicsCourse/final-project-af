@@ -96,7 +96,6 @@ function Enemy(scene,environment,player) {
     this.sound_born = new BABYLON.Sound("enemy_born", "./res/sounds/new_ghost.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
-        console.log(this.hordeN());
         // remove disposed enemies
         this.enemies = this.enemies.filter(enemy => {
                 if (enemy.setToRemove) enemy.dispose();

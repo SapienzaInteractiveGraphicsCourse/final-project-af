@@ -9,8 +9,10 @@ function Environment(scene) {
     
 
     this.load = async function(game) { // Here you load the world assets
-        var skybox = createSkyBox(scene);
-        skybox.setTime(0);
+        this.skybox = createSkyBox(scene);
+        this.skybox.setTime(0);
+        this.skybox.sunlight_direct.intensity *= game.flag_light;
+        this.skybox.sunlight.intensity *= game.flag_light;
 
         var upperworldMat = new BABYLON.StandardMaterial("mat1", scene);
         upperworldMat.ambientTexture = new BABYLON.Texture("./res/textures/ground2.jpg",scene);
@@ -309,7 +311,7 @@ function Environment(scene) {
         var music = new BABYLON.Sound("Music", "./res/sounds/game-song.wav", scene, null, {
             loop: true,
             autoplay: true,
-            volume:1
+            volume:0.5
         });
 
         var hammer_sound  = new BABYLON.Sound("click", "./res/sounds/hammer.wav", scene);
