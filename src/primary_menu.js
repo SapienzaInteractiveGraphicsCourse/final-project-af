@@ -158,13 +158,13 @@ function Menu(game) {
     var rc1 = new BABYLON.GUI.Rectangle();
     rc1.thickness = 0;
     rc1.width = 1;
-    rc1.height = 1.5;
+    rc1.height = 1.4;
     sv1.addControl(rc1);
 
     var text1 = new BABYLON.GUI.TextBlock();
     text1.text = rules_text();
     text1.color = "white";
-    text1.fontSize = 18;
+    text1.fontSize = 16;
     text1.textWrapping = 1;
     text1.textHorizontalAlignment = 0;
     text1.textVerticalAlignment = 0;
@@ -186,7 +186,7 @@ function Menu(game) {
     var rc2 = new BABYLON.GUI.Rectangle();
     rc2.thickness = 0;
     rc2.width = 1;
-    rc2.height = 2;
+    rc2.height = 1.7;
     sv2.addControl(rc2);
 
     var text2 = new BABYLON.GUI.TextBlock();

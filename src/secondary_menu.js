@@ -104,93 +104,51 @@ function SecondaryMenu(advancedTexture2,game) {
     welcome_text.textWrapping = 1;
     welcome_text.textHorizontalAlignment = 2;
     welcome_text.textVerticalAlignment = 2;
+    welcome_text.isVisible = true;
     grid.addControl(welcome_text,0,1);
 
 
+    //////////////////////////////// Commands //////////////////////////////////////////////
 
-    button1.onPointerClickObservable.add(function () {
-        flag_buttons = 1;
-        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+    var sv1 = new BABYLON.GUI.ScrollViewer(null, true);
+    sv1.width = 0.6;
+    sv1.height = 0.7;
+    sv1.thickness = 0;
+    sv1.color = "black";
+    sv1.thumbImage = new BABYLON.GUI.Image("thumb", "res/textures/metal.jpg");
+    sv1.thumbLength = 0.50;
+    sv1.thumbHeight = 1.0;
+    sv1.isVisible = false
+    grid.addControl(sv1, 0, 1);
 
-        var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
-        image_steampunk.width = 0.9;
-        image_steampunk.height = 0.95;
-        grid.addControl(image_steampunk,0,1);
+    var rc = new BABYLON.GUI.Rectangle();
+    rc.thickness = 0;
+    rc.width = 1;
+    rc.height = 1;
+    sv1.addControl(rc);
 
-        thirdMenu(advancedTexture2,game);
-    });
-
-
-    button3.onPointerClickObservable.add(function () {
-        flag_buttons = 3;
-        set_botton_colours (button1,button2,button3,button4,flag_buttons);
-
-        var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
-        image_steampunk.width = 0.9;
-        image_steampunk.height = 0.95;
-        grid.addControl(image_steampunk,0,1);
-
-        var sv = new BABYLON.GUI.ScrollViewer(null, true);
-        sv.width = 0.6;
-        sv.height = 0.7;
-        sv.thickness = 0;
-        sv.color = "black";
-        sv.thumbImage = new BABYLON.GUI.Image("thumb", "res/textures/metal.jpg");
-        sv.thumbLength = 0.50;
-        sv.thumbHeight = 1.0;
-        grid.addControl(sv, 0, 1);
-
-        var rc = new BABYLON.GUI.Rectangle();
-        rc.thickness = 0;
-        rc.width = 1;
-        rc.height = 1;
-        sv.addControl(rc);
-    
-        var text1 = new BABYLON.GUI.TextBlock();
-        text1.text = commands_text();
-        text1.color = "white";
-        text1.fontSize = 18;
-        text1.textWrapping = 1;
-        text1.textHorizontalAlignment = 0;
-        text1.textVerticalAlignment = 0;
-        rc.addControl(text1);
-
-    });
-    
-    
-    button4.onPointerClickObservable.add(function () {
-        flag_buttons = 4;
-        set_botton_colours (button1,button2,button3,button4,flag_buttons);
-
-        var image_steampunk = new BABYLON.GUI.Image("but", "res/textures/steampunk.jpg");
-        image_steampunk.width = 0.9;
-        image_steampunk.height = 0.95;
-        grid.addControl(image_steampunk,0,1);
-
-        var selectBox = new BABYLON.GUI.SelectionPanel("selectBox");
-        selectBox.width = 0.7;
-        selectBox.height = 0.8;
-        selectBox.thickness = 0;
-        selectBox.fontSize = 14;
-        selectBox.color = "white";
-        selectBox.headerColor = "white";
-        selectBox.buttonColor = "gray";
-        selectBox.labelColor = "red";
-
-        selectBox.addGroup(volumeGroup);
-        selectBox.addGroup(lightGroup);
-        
-    
-        grid.addControl(selectBox, 0, 1);  
-    });
+    var text1 = new BABYLON.GUI.TextBlock();
+    text1.text = commands_text();
+    text1.color = "white";
+    text1.fontSize = 18;
+    text1.textWrapping = 1;
+    text1.textHorizontalAlignment = 0;
+    text1.textVerticalAlignment = 0;
+    rc.addControl(text1);
 
 
-    button2.onPointerClickObservable.add(function () {
-        flag_buttons = 2;
-        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+    //////////////////////////////// Settings //////////////////////////////////////////////
 
-        advancedTexture2.removeControl(rect1);
-    });
+    var selectBox = new BABYLON.GUI.SelectionPanel("selectBox");
+    selectBox.width = 0.7;
+    selectBox.height = 0.8;
+    selectBox.thickness = 0;
+    selectBox.fontSize = 14;
+    selectBox.color = "white";
+    selectBox.headerColor = "white";
+    selectBox.buttonColor = "gray";
+    selectBox.labelColor = "red";
+    selectBox.isVisible = false;
 
     var setLight = function(but) {   
         switch(but) {
@@ -215,24 +173,55 @@ function SecondaryMenu(advancedTexture2,game) {
     lightGroup.addRadio("Medium", setLight);
     lightGroup.addRadio("High", setLight, true);
 
-
     var volumeGroup = new BABYLON.GUI.SliderGroup("Sounds volume", "S");
 	volumeGroup.addSlider("Audio", setVolume, "Level", 0, 5, 1)
-}
 
+    selectBox.addGroup(volumeGroup);
+    selectBox.addGroup(lightGroup);
 
+    grid.addControl(selectBox, 0, 1);  
 
-function get_settings_panel(advancedTexture2){
     
-    var selectBox = new BABYLON.GUI.SelectionPanel("selectBox");
-    selectBox.width = 0.25;
-    selectBox.height = 0.52;
-    selectBox.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-    selectBox.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 
-    advancedTexture2.addControl(selectBox);
-    return selectBox
+
+    button1.onPointerClickObservable.add(function () {
+        flag_buttons = 1;
+        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+
+        thirdMenu(advancedTexture2,game);
+    });
+
+
+    button3.onPointerClickObservable.add(function () {
+        flag_buttons = 3;
+        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+
+        welcome_text.isVisible = false;
+        selectBox.isVisible = false;
+        sv1.isVisible =true;
+    });
+    
+    
+    button4.onPointerClickObservable.add(function () {
+        flag_buttons = 4;
+        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+
+        welcome_text.isVisible = false;
+        sv1.isVisible =false;
+        selectBox.isVisible = true;
+    });
+
+
+    button2.onPointerClickObservable.add(function () {
+        flag_buttons = 2;
+        set_botton_colours (button1,button2,button3,button4,flag_buttons);
+
+        advancedTexture2.removeControl(rect1);
+    });
+
+    
 }
+
 
 
 function set_botton_colours (button1,button2,button3,button4,flag){

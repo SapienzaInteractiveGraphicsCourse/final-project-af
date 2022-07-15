@@ -18,7 +18,7 @@ function rules_text(){
 }
 
 function commands_text(){
-    text += "In order to activate the commands, please lock in with left click at the beginning of the game.\n";
+    text = "In order to activate the commands, please lock in with left click at the beginning of the game.\n";
     text += " \n";
     text += "1.  PLAYER MOTION: \n";
     text += "  - W: move forward \n";
