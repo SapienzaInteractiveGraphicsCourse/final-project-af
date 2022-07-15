@@ -171,8 +171,8 @@ function Bullet(player) {
 
     this.sound = new BABYLON.Sound("click", "./res/sounds/gunshot.wav", this.scene);
 
-    this.BULLET_LIFETIME = 100;
-    this.STEP_LENGTH = 1.5;
+    this.BULLET_LIFETIME = 50;
+    this.STEP_LENGTH = 2.5;
 
     this.orientBullet = function(bullet) {
 
