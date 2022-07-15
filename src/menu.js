@@ -157,30 +157,30 @@ function Menu(game) {
         image_steampunk.height = 0.95;
         grid.addControl(image_steampunk,0,1);
 
-        var sv = new BABYLON.GUI.ScrollViewer(null, true);
-        sv.width = 0.65;
-        sv.height = 0.7;
-        sv.thickness = 0;
-        sv.color = "black";
-        sv.thumbImage = new BABYLON.GUI.Image("thumb", "res/textures/metal.jpg");
-        sv.thumbLength = 0.50;
-        sv.thumbHeight = 1.0;
-        grid.addControl(sv, 0, 1);
+        var sv1 = new BABYLON.GUI.ScrollViewer(null, true);
+        sv1.width = 0.65;
+        sv1.height = 0.7;
+        sv1.thickness = 0;
+        sv1.color = "black";
+        sv1.thumbImage = new BABYLON.GUI.Image("thumb", "res/textures/metal.jpg");
+        sv1.thumbLength = 0.50;
+        sv1.thumbHeight = 1.0;
+        grid.addControl(sv1, 0, 1);
 
-        var rc = new BABYLON.GUI.Rectangle();
-        rc.thickness = 0;
-        rc.width = 1;
-        rc.height = 1.3;
-        sv.addControl(rc);
+        var rc1 = new BABYLON.GUI.Rectangle();
+        rc1.thickness = 0;
+        rc1.width = 1;
+        rc1.height = 1.5;
+        sv1.addControl(rc1);
     
-        var text2 = new BABYLON.GUI.TextBlock();
-        text2.text = rules_text();
-        text2.color = "white";
-        text2.fontSize = 18;
-        text2.textWrapping = 1;
-        text2.textHorizontalAlignment = 0;
-        text2.textVerticalAlignment = 0;
-        rc.addControl(text2);
+        var text1 = new BABYLON.GUI.TextBlock();
+        text1.text = rules_text();
+        text1.color = "white";
+        text1.fontSize = 18;
+        text1.textWrapping = 1;
+        text1.textHorizontalAlignment = 0;
+        text1.textVerticalAlignment = 0;
+        rc1.addControl(text1);
 
     });
 
