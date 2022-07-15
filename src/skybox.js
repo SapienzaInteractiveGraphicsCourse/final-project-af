@@ -2,7 +2,7 @@ function createSkyBox(scene,game) {
     var skyMaterial = new BABYLON.SkyMaterial("skyMaterial", scene);
     skyMaterial.backFaceCulling = false;
 
-    var skybox = new BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
+    this.skybox = new BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     skybox.material = skyMaterial;
 
     var sunlight_direct = new BABYLON.DirectionalLight("sunlight_direct",new BABYLON.Vector3(0, -1, 0), scene);

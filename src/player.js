@@ -58,7 +58,7 @@ function Player(assets,scene,input,planet,game) {
         var pOld = this.planet.position.clone();
         var qOld = this.planet.rotationQuaternion.clone();
 
-        this.input.updateFromKeyboard();
+        this.input.updateFromKeyboard();       
         // get delta time
         this.deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
         var straight = FWD_SPEED*this.input.straight; // contains straight desired input
@@ -254,6 +254,7 @@ function PlayerInput(scene) {
     this.strafe = 0;
 
     this.prev_spacebar = false;
+    this.click = false;
     this.shoot = false;
 
     this.updateFromKeyboard = function() {
