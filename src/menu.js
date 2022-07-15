@@ -247,7 +247,7 @@ function Menu(game) {
         grid.addControl(selectBox, 0, 1);  
     });
 
-
+    game.flag_light = 1.0;
     var setLight = function(but) {   
         switch(but) {
             case 0: 

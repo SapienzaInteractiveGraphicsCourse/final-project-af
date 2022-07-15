@@ -1,0 +1,3 @@
+var min = BABYLON.Vector3(-20,-49,-20);
+var max = BABYLON.Vector3(20,50,20);
+g.scene.getMeshByName("kristalli_03_fixed__1_.001").setBoundingInfo(new BABYLON.BoundingInfo(min,max));

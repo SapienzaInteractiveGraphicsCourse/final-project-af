@@ -11,8 +11,10 @@ function Environment(scene) {
     this.load = async function(game) { // Here you load the world assets
         this.skybox = createSkyBox(scene);
         this.skybox.setTime(0);
-        this.skybox.sunlight_direct.intensity *= game.flag_light;
-        this.skybox.sunlight.intensity *= game.flag_light;
+        if (game.flag_light != undefined) {
+            this.skybox.sunlight_direct.intensity *= game.flag_light;
+            this.skybox.sunlight.intensity *= game.flag_light;
+        }
 
         var upperworldMat = new BABYLON.StandardMaterial("mat1", scene);
         upperworldMat.ambientTexture = new BABYLON.Texture("./res/textures/ground2.jpg",scene);
