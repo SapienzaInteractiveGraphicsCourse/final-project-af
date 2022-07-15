@@ -27,15 +27,6 @@ function Menu(game) {
 
     this.advancedTexture = advancedTexture;
 
-    var rect = new BABYLON.GUI.Rectangle();
-    rect.width = "1000px";
-    rect.height = "800px";
-    rect.cornerRadius = 30;
-    rect.color = "black";
-    rect.thickness = 3;
-    rect.background = "white";
-    advancedTexture.addControl(rect);
-
     var rect1 = new BABYLON.GUI.Rectangle();
     rect1.width = "700px";
     rect1.height = "500px";
@@ -43,7 +34,7 @@ function Menu(game) {
     rect1.color = "black";
     rect1.thickness = 3;
     rect1.background = "blue";
-    rect.addControl(rect1);
+    advancedTexture.addControl(rect1);
 
     var image_rock = new BABYLON.GUI.Image("but", "res/textures/rock_wall.jpg");
     image_rock.width = 1;
