@@ -60,7 +60,7 @@ function Enemy(scene,environment,player) {
         base.position = where;
         base.rotationQuaternion = new BABYLON.Quaternion();
 
-        base.target = Math.random() > 1 ? "player" : "house";
+        base.target = Math.random() > 0.33 ? "player" : "house";
         base.setToRemove = false;
         this.enemies.push(base);
         
