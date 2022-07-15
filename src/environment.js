@@ -75,17 +75,17 @@ function Environment(scene) {
 
 
         await this.loadTractorAssets(this.scene);
-        this.tractorAssets.position = new BABYLON.Vector3( R-2.4, -10, 5.5);
-        this.tractorAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 -Math.PI/9);
+        this.tractorAssets.position = new BABYLON.Vector3(R/2, -R*0.7, R/2);
+        this.tractorAssets.rotation = new BABYLON.Vector3(3*Math.PI/4, Math.PI/4, 0);
         this.tractorAssets.scaling = new BABYLON.Vector3(0.7,0.7,0.7);
         this.tractorAssets.parent = this.upperworld;
         this.tractorAssets.checkCollisions = true;
         this.tractorAssets.getChildren().forEach(c=>c.id = "collidable");
 
         await this.loadStoneAssets(this.scene);
-        this.stoneAssets.position = new BABYLON.Vector3( R-2.4, 10, 5.5);
-        this.stoneAssets.rotation = new BABYLON.Vector3(0,-Math.PI/17, -Math.PI/2 + Math.PI/9);
-        this.stoneAssets.scaling = new BABYLON.Vector3(0.008,0.008,0.008);
+        this.stoneAssets.position = new BABYLON.Vector3(R/2, R*0.7, R/2);
+        this.stoneAssets.rotation = new BABYLON.Vector3(Math.PI/4, Math.PI/4, 0);
+        this.stoneAssets.scaling = new BABYLON.Vector3(0.02,0.02,0.02);
         this.stoneAssets.parent = this.upperworld;
         this.stoneAssets.checkCollisions = true;
         this.stoneAssets.getChildren().forEach(c=>c.id = "collidable");

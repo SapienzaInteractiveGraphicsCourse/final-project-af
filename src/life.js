@@ -20,7 +20,7 @@ function playerLife (game) {
         this.time = (end - this.start)/1000;
         this.game.goToLost();
         
-      }}); 
+      }});
 }
 
 

@@ -206,20 +206,6 @@ function SecondaryMenu(advancedTexture2,game) {
         }
     }
 
-    var setDiff = function(but) {   
-        switch(but) {
-            case 0: 
-                flag_diff = 1;
-            break
-            case 1: 
-                flag_diff = 2;
-            break
-            case 2: 
-                flag_diff = 3;
-            break
-        }
-    }
-
     var setVolume = function(value){
         BABYLON.Engine.audioEngine.setGlobalVolume(value);
     }

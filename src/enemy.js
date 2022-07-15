@@ -183,7 +183,7 @@ function getRandomLoc3(R){
 function newTime(start){
     
     var time = (start - new Date().getTime())/1000;
-    return Math.exp(time/1000)*5000;
+    return Math.exp(-time/1000)*5000;
 
 }
 
