@@ -96,6 +96,8 @@ function Player(assets,scene,input,planet,game) {
             var e = enemies[i];
             if (this.cm.intersectsMesh(e,true)) {
                 // collision with enemy
+                e.parent.setToRemove = 1; // always remove the enemy
+
                 if (this.hittable) {
                     
 

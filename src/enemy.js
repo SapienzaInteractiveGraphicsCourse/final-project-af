@@ -6,7 +6,32 @@ function Enemy(scene,environment,player) {
 
     this.environment = environment;
 
-    this.STEP_LENGTH = 0.07;
+    switch (g.difficulty) {
+        case 1:
+            this.STEP_LENGTH = 0.15; break; // lower than this is just too slow
+        case 2:
+            this.STEP_LENGTH = 0.15; break;
+        case 3:
+            this.STEP_LENGTH = 0.23; break;
+        default:
+            this.STEP_LENGTH = 0.15;
+    }
+
+    this.hordeC = 0;
+    this.hordeN = function() {
+        switch (g.difficulty) {
+            case 1:
+                return Math.round(this.hordeC / 10) + 1;
+            case 2:
+                return Math.round(this.hordeC / 7.5) + 1;
+            case 3:
+                return Math.round(this.hordeC / 5) + 1;
+            default:
+                return 1;
+        }
+        
+    }
+
 
     this.enemies = [];
 
@@ -71,6 +96,7 @@ function Enemy(scene,environment,player) {
     this.sound_born = new BABYLON.Sound("enemy_born", "./res/sounds/new_ghost.wav", scene);
 
     this.scene.onBeforeRenderObservable.add(() => {
+        console.log(this.hordeN());
         // remove disposed enemies
         this.enemies = this.enemies.filter(enemy => {
                 if (enemy.setToRemove) enemy.dispose();
@@ -133,7 +159,7 @@ function Enemy(scene,environment,player) {
 
     
 
-    this.hordeN = 1;
+
     this.callEnemies = function(){
         var time = newTime(this.player.life.start);
         var R = this.environment.planet.radius;
@@ -142,9 +168,10 @@ function Enemy(scene,environment,player) {
         timeout: time,
         contextObservable: scene.onBeforeRenderObservable,
         onEnded: () => {
-            for(var instance = 0; instance < this.hordeN; instance++){
+            this.hordeC += 1;
+            for(var instance = 0; instance < this.hordeN(); instance++){
                 var where = getRandomLoc3(R);
-                this.instanceEnemy(where);
+                this.instanceEnemy(where); 
             }
             this.sound_born.play();
             this.callEnemies();

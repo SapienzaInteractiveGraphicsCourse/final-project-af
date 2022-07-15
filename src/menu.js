@@ -265,13 +265,13 @@ function Menu(game) {
     var setDiff = function(but) {   
         switch(but) {
             case 0: 
-                //game.difficulty = 1;
+                game.difficulty = 1;
             break
             case 1: 
-                //game.difficulty =  2;
+                game.difficulty =  2;
             break
             case 2: 
-                //game.difficulty =  3;
+                game.difficulty =  3;
             break
         }
     }
