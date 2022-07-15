@@ -267,8 +267,8 @@ function set_botton_colours (button1,button2,button3,button4,flag){
 function thirdMenu(advancedTexture2,game){
 
     var rect1 = new BABYLON.GUI.Rectangle();
-    rect1.width = "200px";
-    rect1.height = "250px";
+    rect1.width = "300px";
+    rect1.height = "100px";
     rect1.cornerRadius = 30;
     rect1.color = "black";
     rect1.thickness = 3;
@@ -285,23 +285,29 @@ function thirdMenu(advancedTexture2,game){
     grid.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER; 
     grid.width = 0.98;
     grid.height = 0.98;
-    grid.addColumnDefinition(1.0);
-
-    rect1.addControl(grid);
+    grid.addRowDefinition(0.5);
+    grid.addRowDefinition(0.5);
+    rect1.addControl(grid,0,0);
 
     var text = new BABYLON.GUI.TextBlock();
     text.width = 0.7;
     text.height = 0.7;
     text.text = "Sure to quit?";
     text.color = "white";
-    text.fontSize = 20;
+    text.fontSize = 30;
     text.textWrapping = 1;
     text.textHorizontalAlignment = 2;
     text.textVerticalAlignment = 0;
     grid.addControl(text);
 
-    var panel = new BABYLON.GUI.StackPanel();    
-    grid.addControl(panel,0,1);
+    var grid2 = new BABYLON.GUI.Grid();   
+    grid2.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    grid2.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER; 
+    grid2.width = 0.98;
+    grid2.height = 0.98;
+    grid2.addColumnDefinition(0.5);
+    grid2.addColumnDefinition(0.5);
+    grid.addControl(grid2,1,0);
 
     var buttonYES = BABYLON.GUI.Button.CreateSimpleButton("YES_button", "YES");
     buttonYES.thickness = 3;
@@ -312,13 +318,7 @@ function thirdMenu(advancedTexture2,game){
     buttonYES.children[0].fontSize = 24;
     buttonYES.color = "#303233";
     buttonYES.background = "#8c8f91";
-    panel.addControl(buttonYES); 
-
-    var rectSpace2 = new BABYLON.GUI.Rectangle();
-    rectSpace2.alpha = 0;
-    rectSpace2.width = 0.1;
-    rectSpace2.height = "10px";
-    panel.addControl(rectSpace2);
+    grid2.addControl(buttonYES,1,0); 
 
     var buttonNO = BABYLON.GUI.Button.CreateSimpleButton("NO_button", "NO");
     buttonNO.thickness = 3;
@@ -329,7 +329,7 @@ function thirdMenu(advancedTexture2,game){
     buttonNO.children[0].fontSize = 24;
     buttonNO.color = "#303233";
     buttonNO.background = "#8c8f91";
-    panel.addControl(buttonNO,0,2); 
+    grid2.addControl(buttonNO,1,1); 
     
     buttonYES.onPointerClickObservable.add(function () {
         game.goToMainMenu();
