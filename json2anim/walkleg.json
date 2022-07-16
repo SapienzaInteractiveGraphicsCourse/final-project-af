@@ -1,1 +1,0 @@
-{"animations":[{"name":"p_walk_up_left_leg","property":"rotation","framePerSecond":100,"dataType":1,"loopBehavior":1,"blendingSpeed":0.01,"keys":[{"frame":0,"values":[-0.642,3.138,3.401]},{"frame":45.29121798069306,"values":[1.11,3.1418668658214735,3.307]},{"frame":100,"values":[-0.64,3.14,3.4]}],"ranges":[]}]}
