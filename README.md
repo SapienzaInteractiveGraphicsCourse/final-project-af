@@ -8,7 +8,7 @@ Final project for the course of Interactive Graphics 2021/2022.
 
 ## Try out the game!
 
-Github pages [link](https://sapienzainteractivegraphicscourse.github.io/final-project-af/) (:red_circle: mettere repo pubblica)
+Github pages [link](https://sapienzainteractivegraphicscourse.github.io/final-project-af/)
 
 You can use WASD to move and SPACEBAR to shoot.
 
