@@ -71,6 +71,10 @@ function Environment(scene) {
         await this.loadHouseAssets(this.scene);
         this.houseAssets.position = new BABYLON.Vector3(-7.5 , R-1.9, 0);
         this.houseAssets.rotation = new BABYLON.Vector3(Math.PI/11.5,-Math.PI/2,0); //-Math.PI/11.5
+        var min = new BABYLON.Vector3(-2.5,0,-2.5);
+        var max = new BABYLON.Vector3(2.5,4,2.5);
+        this.houseAssets.getChildren()[0].setBoundingInfo(new BABYLON.BoundingInfo(min,max))
+        
         this.houseAssets.scaling = new BABYLON.Vector3(1.3,1.3, 1.3);
         this.houseAssets.getChildren().forEach(c=>c.id = "collidable");
         
