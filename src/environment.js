@@ -18,15 +18,18 @@ function Environment(scene) {
 
         var upperworldMat = new BABYLON.StandardMaterial("mat1", scene);
         upperworldMat.ambientTexture = new BABYLON.Texture("./res/textures/ground2.jpg",scene);
-        upperworldMat.specularColor = new BABYLON.Color3(0,0,0);
+        upperworldMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+        upperworldMat.specularPower = 64;
+        upperworldMat.bumpTexture3 = new BABYLON.Texture(".res/textures/grassn.png", scene);
 
         var underworldMat = new BABYLON.StandardMaterial("mat2", scene);
         underworldMat.ambientTexture = new BABYLON.Texture("./res/textures/vulcan.jpg",scene);
-        underworldMat.specularColor = new BABYLON.Color3(0,0,0);
+        underworldMat.specularColor = new BABYLON.Color3(0.1,0.1,0.1);
+        underworldMat.bumpTexture2 = new BABYLON.Texture(".res/textures/rockn.png", scene);
+        underworldMat.specularPower = 64;
 
         var barrierMat = new BABYLON.StandardMaterial("barrierMat", scene);
         barrierMat.specularColor = new BABYLON.Color3(221,160,221);
-        //barrierMat.diffuseTexture = new BABYLON.Texture(".res/textures/fuxya.png", scene);
         barrierMat.alpha = 0.3;
         var purple = new BABYLON.Color4(221/255,160/255,221/255,1);
 
