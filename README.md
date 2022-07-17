@@ -1,4 +1,4 @@
-# :skull: Spectre Invasion :skull:
+# :skull: Spectre Survivor :skull:
 
 Final project for the course of Interactive Graphics 2021/2022.
 
